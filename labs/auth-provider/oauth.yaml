@@ -1,0 +1,31 @@
+apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  annotations:
+    release.openshift.io/create-only: "true"
+  creationTimestamp: "2020-08-05T18:23:41Z"
+  generation: 1
+  managedFields:
+  - apiVersion: config.openshift.io/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:release.openshift.io/create-only: {}
+      f:spec: {}
+    manager: cluster-version-operator
+    operation: Update
+    time: "2020-08-05T18:23:41Z"
+  name: cluster
+  resourceVersion: "2121"
+  selfLink: /apis/config.openshift.io/v1/oauths/cluster
+  uid: c96a18f6-b8de-4722-b5bf-ca6c39cdb78b
+spec:
+  identityProviders:
+  - htpasswd:
+      fileData:
+        name: localusers
+    mappingMethod: claim
+    name: myusers
+    type: HTPasswd
