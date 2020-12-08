@@ -1,0 +1,202 @@
+Script started on 2020-12-08 05:32:33-05:00
+]777;notify;Command completed;git status]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ source /usr/local/etc/ocp4.config
+]777;notify;Command completed;source /usr/local/etc/ocp4.config]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc login -u kubeadmin -p ${RHT_OCP4_KUBEADM_PASSWD} https://api.ocp4.example. com:6443
+Login successful.
+
+You have access to 58 projects, the list has been suppressed. You can list all projects with 'oc projects'
+
+Using project "default".
+]777;notify;Command completed;oc login -u kubeadmin -p ${RHT_OCP4_KUBEADM_PASSWD} https://api.ocp4.example.com:6443]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc new-project install-storage
+Now using project "install-storage" on server "https://api.ocp4.example.com:6443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app ruby~https://github.com/sclorg/ruby-ex.git
+
+to build a new example application in Ruby. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node
+
+]777;notify;Command completed;oc new-project install-storage]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get storageclass
+NAME                    PROVISIONER               RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
+nfs-storage (default)   nfs-storage-provisioner   Delete          Immediate           false                  124d
+]777;notify;Command completed;oc get storageclass]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ clear
+[3J[H[2J]777;notify;Command completed;clear]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc new-app --name postgresql-persistent \
+> --docker-image registry.redhat.io/rhel8/postgresql-12:1-43 \
+> -e POSTGRESQL_USER=redhat \
+> -e POSTGRESQL_PASSWORD=redhat123 \
+> -e POSTGRESQL_DATABASE=persistentdb
+--> Found container image 667898a (3 months old) from registry.redhat.io for "registry.redhat.io/rhel8/postgresql-12:1-43"
+
+    PostgreSQL 12 
+    ------------- 
+    PostgreSQL is an advanced Object-Relational database management system (DBMS). The image contains the client and server programs that you'll need to create, run, maintain and access a PostgreSQL DBMS server.
+
+    Tags: database, postgresql, postgresql12, postgresql-12
+
+    * An image stream tag will be created as "postgresql-persistent:1-43" that will track this image
+
+--> Creating resources ...
+    imagestream.image.openshift.io "postgresql-persistent" created
+    deployment.apps "postgresql-persistent" created
+    service "postgresql-persistent" created
+--> Success
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     'oc expose svc/postgresql-persistent' 
+    Run 'oc status' to view your app.
+]777;notify;Command completed;oc new-app --name postgresql-persistent --docker-image registry.redhat.io/rhel8/postgresql-12:1-43 -e POSTGRESQL_USER=redhat -e POSTGRESQL_PASSWORD=redhat123 -e POSTGRESQL_DATABASE=persistentdb]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc status
+In project install-storage on server https://api.ocp4.example.com:6443
+
+svc/postgresql-persistent - 172.30.39.6:5432
+  deployment/postgresql-persistent deploys istag/postgresql-persistent:1-43 
+    deployment #2 running for 2 seconds - 0/1 pods
+    deployment #1 deployed 4 seconds ago - 0/1 pods growing to 1
+
+
+1 info identified, use 'oc status --suggest' to see details.
+]777;notify;Command completed;oc status]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get pods
+NAME                                     READY   STATUS              RESTARTS   AGE
+postgresql-persistent-855df64784-5tqpc   0/1     ContainerCreating   0          11s
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get pods
+NAME                                     READY   STATUS    RESTARTS   AGE
+postgresql-persistent-855df64784-5tqpc   1/1     Running   0          104s
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc set volumes deployment/postgresql-persistent \
+> --add --name postgresql-storage --type pvc --claim-class nfs-storage \
+> --claim-mode rwo --claim-size 10Gi --mount-path /var/lib/pgsql \
+> --claim-name postgresql-storage
+deployment.apps/postgresql-persistent volume updated
+]777;notify;Command completed;oc set volumes deployment/postgresql-persistent --add --name postgresql-storage --type pvc --claim-class nfs-storage --claim-mode rwo --claim-size 10Gi --mount-path /var/lib/pgsql --claim-name postgresql-storage]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc set volumes deployment/postgresql-persistent --add --name postgresql-storagge --type pvc --claim-class nfs-storage --claim-mode rwo --claim-size 10Gi --mount-path /var/lib/pgsql --claim-nname postgresql-storage[A[A[C[C[C[C[C[C[C[C[C[C[C[C[C[Cget pods[K
+[K
+[K[A[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+NAME                                     READY   STATUS              RESTARTS   AGE
+postgresql-persistent-855df64784-5tqpc   1/1     Running             0          119s
+postgresql-persistent-d767587df-97xw7    0/1     ContainerCreating   0          3s
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get pvc
+NAME                 STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+postgresql-storage   Bound    pvc-c203e400-3aec-41ba-908b-d8dcbc3ef5e9   10Gi       RWO            nfs-storage    15s
+]777;notify;Command completed;oc get pvc]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get pv
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                                             STORAGECLASS   REASON   AGE
+pvc-26cc804a-4ec2-4f52-b6e5-84404b4b9def   100Gi      RWX            Delete           Bound    openshift-image-registry/image-registry-storage   nfs-storage             124d
+pvc-c203e400-3aec-41ba-908b-d8dcbc3ef5e9   10Gi       RWO            Delete           Bound    install-storage/postgresql-storage                nfs-storage             33s
+]777;notify;Command completed;oc get pv]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ clear
+[3J[H[2J]777;notify;Command completed;clear]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get pv \
+> -o custom-columns=NAME:.metadata.name,CLAIM:.spec.claimRef.name
+NAME                                       CLAIM
+pvc-26cc804a-4ec2-4f52-b6e5-84404b4b9def   image-registry-storage
+pvc-c203e400-3aec-41ba-908b-d8dcbc3ef5e9   postgresql-storage
+]777;notify;Command completed;oc get pv -o custom-columns=NAME:.metadata.name,CLAIM:.spec.claimRef.name]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ cd ~/DO280/labs/install-storage
+]777;notify;Command completed;cd ~/DO280/labs/install-storage]0;student@workstation:~/DO280/labs/install-storage]7;file://workstation.lab.example.com/home/student/DO280/labs/install-storage[student@workstation install-storage]$ ./init_data.sh 
+Populating characters table
+CREATE TABLE
+INSERT 0 5
+]777;notify;Command completed;./init_data.sh ]0;student@workstation:~/DO280/labs/install-storage]7;file://workstation.lab.example.com/home/student/DO280/labs/install-storage[student@workstation install-storage]$ ./check_data.sh 
+Checking characters table
+ id |          name           |           nationality            
+----+-------------------------+----------------------------------
+  1 | Wolfgang Amadeus Mozart | Prince-Archbishopric of Salzburg
+  2 | Ludwig van Beethoven    | Bonn, Germany
+  3 | Johann Sebastian Bach   | Eisenach, Germany
+  4 | José Pablo Moncayo     | Guadalajara, México
+  5 | Niccolò Paganini       | Genoa, Italy
+(5 rows)
+
+]777;notify;Command completed;./check_data.sh ]0;student@workstation:~/DO280/labs/install-storage]7;file://workstation.lab.example.com/home/student/DO280/labs/install-storage[student@workstation install-storage]$ oc delete all -l app=postgresql-persistent
+service "postgresql-persistent" deleted
+deployment.apps "postgresql-persistent" deleted
+imagestream.image.openshift.io "postgresql-persistent" deleted
+]777;notify;Command completed;oc delete all -l app=postgresql-persistent]0;student@workstation:~/DO280/labs/install-storage]7;file://workstation.lab.example.com/home/student/DO280/labs/install-storage[student@workstation install-storage]$ oc get pods
+NAME                                    READY   STATUS        RESTARTS   AGE
+postgresql-persistent-d767587df-97xw7   0/1     Terminating   0          2m10s
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280/labs/install-storage]7;file://workstation.lab.example.com/home/student/DO280/labs/install-storage[student@workstation install-storage]$ oc new-app --name postgresql-persistent2 \
+> --docker-image registry.redhat.io/rhel8/postgresql-12:1-43 \
+> -e POSTGRESQL_USER=redhat \
+> -e POSTGRESQL_PASSWORD=redhat123 \
+> -e POSTGRESQL_DATABASE=persistentdb
+--> Found container image 667898a (3 months old) from registry.redhat.io for "registry.redhat.io/rhel8/postgresql-12:1-43"
+
+    PostgreSQL 12 
+    ------------- 
+    PostgreSQL is an advanced Object-Relational database management system (DBMS). The image contains the client and server programs that you'll need to create, run, maintain and access a PostgreSQL DBMS server.
+
+    Tags: database, postgresql, postgresql12, postgresql-12
+
+    * An image stream tag will be created as "postgresql-persistent2:1-43" that will track this image
+
+--> Creating resources ...
+    imagestream.image.openshift.io "postgresql-persistent2" created
+    deployment.apps "postgresql-persistent2" created
+    service "postgresql-persistent2" created
+--> Success
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     'oc expose svc/postgresql-persistent2' 
+    Run 'oc status' to view your app.
+]777;notify;Command completed;oc new-app --name postgresql-persistent2 --docker-image registry.redhat.io/rhel8/postgresql-12:1-43 -e POSTGRESQL_USER=redhat -e POSTGRESQL_PASSWORD=redhat123 -e POSTGRESQL_DATABASE=persistentdb]0;student@workstation:~/DO280/labs/install-storage]7;file://workstation.lab.example.com/home/student/DO280/labs/install-storage[student@workstation install-storage]$ ocstatu[K[K[K[K[K o[Ksa[Ktats[Kus
+In project install-storage on server https://api.ocp4.example.com:6443
+
+svc/postgresql-persistent2 - 172.30.177.197:5432
+  deployment/postgresql-persistent2 deploys istag/postgresql-persistent2:1-43 
+    deployment #2 running for 9 seconds - 1 pod
+    deployment #1 deployed 10 seconds ago
+
+
+1 info identified, use 'oc status --suggest' to see details.
+]777;notify;Command completed;oc status]0;student@workstation:~/DO280/labs/install-storage]7;file://workstation.lab.example.com/home/student/DO280/labs/install-storage[student@workstation install-storage]$ oc fet p[K[K[K[K[K[K[K[K./check_data.sh
+Checking characters table
+ERROR: 'characters' table does not exist
+]777;notify;Command completed;./check_data.sh]0;student@workstation:~/DO280/labs/install-storage]7;file://workstation.lab.example.com/home/student/DO280/labs/install-storage[student@workstation install-storage]$ oc fe[K[Kget pods
+NAME                                    READY   STATUS    RESTARTS   AGE
+postgresql-persistent2-6cd58db8-tt5lh   1/1     Running   0          40s
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280/labs/install-storage]7;file://workstation.lab.example.com/home/student/DO280/labs/install-storage[student@workstation install-storage]$ oc get pods./check_data.sh
+Checking characters table
+ERROR: 'characters' table does not exist
+]777;notify;Command completed;./check_data.sh]0;student@workstation:~/DO280/labs/install-storage]7;file://workstation.lab.example.com/home/student/DO280/labs/install-storage[student@workstation install-storage]$ oc set volumes deployment/postgresql-persistent2 \
+> --add --name postgresql-storage --type pvc --claim-class nfs-storage \
+> --claim-mode rwo --claim-size 10Gi --mount-path /var/lib/pgsql \
+> --claim-name postgresql-storage
+deployment.apps/postgresql-persistent2 volume updated
+error: failed to patch volume update to pod template: persistentvolumeclaims "postgresql-storage" already exists
+]777;notify;Command completed;oc set volumes deployment/postgresql-persistent2 --add --name postgresql-storage --type pvc --claim-class nfs-storage --claim-mode rwo --claim-size 10Gi --mount-path /var/lib/pgsql --claim-name postgresql-storage]0;student@workstation:~/DO280/labs/install-storage]7;file://workstation.lab.example.com/home/student/DO280/labs/install-storage[student@workstation install-storage]$ oc set volumes deployment/postgresql-persistent2 --add --name postgresql--storage --type pvc --claim-class nfs-storage --claim-mode rwo --claim-size 10Gi --mount-path /var/lib/pgsql --cclaim-name postgresql-storage[C[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --cl[1P[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --cla[1P[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --clai[1P[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim[1P[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C--mount-path /var/lib/pgsql --claim-[1P[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-n[1P[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-na[1P[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-nam[1P[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name[1P postgresql-storage[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name [1Ppostgresql-storage[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name p[1Postgresql-storage[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name po[1Pstgresql-storage[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name pos[1Ptgresql-storage[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name post[1Pgresql-storage[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name postg[1Presql-storage[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name postgr[1Pesql-storage[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name postgre[1Psql-storage[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C--mount-path /var/lib/pgsql --claim-name postgres[1Pql-storage[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name postgresq[1Pl-storage[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name postgresql[1P-storage[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name postgresql-[1Pstorage[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C--mount-path /var/lib/pgsql --claim-name postgresql-s[1Ptorage[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name postgresql-st[1Porage[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name postgresql-sto[1Prage[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name postgresql-stor[1Page[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name postgresql-stora[1Pge[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name postgresql-storag[1Pe[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name postgresql-storage[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C --mount-path /var/lib/pgsql --claim-name postgresql-storage [K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1P
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P
+deployment.apps/postgresql-persistent2 volume updated
+]777;notify;Command completed;oc set volumes deployment/postgresql-persistent2 --add --name postgresql-storage --type pvc  --mount-path /var/lib/pgsql --claim-name postgresql-storage]0;student@workstation:~/DO280/labs/install-storage]7;file://workstation.lab.example.com/home/student/DO280/labs/install-storage[student@workstation install-storage]$ oc set volumes deployment/postgresql-persistent2 --add --name postgresql--storage --type pvc  --mount-path /var/lib/pgsql --claim-name postgresql-storage[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C--claim-class nfs-storage --claim-mode rwo --claim-size 10Gi --mount-path /var/lib/pgsql --cclaim-name postgresql-storage[A[A[C[C[C[C[C[C[C[C[C[C./check_data.sh[K
+[K
+[K[A[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+Checking characters table
+ id |          name           |           nationality            
+----+-------------------------+----------------------------------
+  1 | Wolfgang Amadeus Mozart | Prince-Archbishopric of Salzburg
+  2 | Ludwig van Beethoven    | Bonn, Germany
+  3 | Johann Sebastian Bach   | Eisenach, Germany
+  4 | José Pablo Moncayo     | Guadalajara, México
+  5 | Niccolò Paganini       | Genoa, Italy
+(5 rows)
+
+]777;notify;Command completed;./check_data.sh]0;student@workstation:~/DO280/labs/install-storage]7;file://workstation.lab.example.com/home/student/DO280/labs/install-storage[student@workstation install-storage]$ oc delete all -l app=postgresql-persistent2
+service "postgresql-persistent2" deleted
+deployment.apps "postgresql-persistent2" deleted
+imagestream.image.openshift.io "postgresql-persistent2" deleted
+]777;notify;Command completed;oc delete all -l app=postgresql-persistent2]0;student@workstation:~/DO280/labs/install-storage]7;file://workstation.lab.example.com/home/student/DO280/labs/install-storage[student@workstation install-storage]$ oc delete pvc/postgresql-storage
+persistentvolumeclaim "postgresql-storage" deleted
+]777;notify;Command completed;oc delete pvc/postgresql-storage]0;student@workstation:~/DO280/labs/install-storage]7;file://workstation.lab.example.com/home/student/DO280/labs/install-storage[student@workstation install-storage]$ cd && lab install-storage finish
+
+Completing Guided Exercise: Introducing OpenShift Dynamic Storage
+
+ · Delete OpenShift project 'install-storage'..................  [1;36mSUCCESS[0;39m
+ · Wait for project 'install-storage' to be gone...............  [1;36mSUCCESS[0;39m
+ · Remove exercise files.......................................  [1;36mSUCCESS[0;39m
+
+Please use start if you wish to do the exercise again.
+
+]777;notify;Command completed;cd && lab install-storage finish]0;student@workstation:~]7;file://workstation.lab.example.com/home/student[student@workstation ~]$ cd DO280-apps/
+]777;notify;Command completed;cd DO280-apps/]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ git status
+On branch install-storage
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	[31mlabs/[m
+	[31mtypescript[m
+
+nothing added to commit but untracked files present (use "git add" to track)
+]777;notify;Command completed;git status]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ g[Kexit
+
+Script done on 2020-12-08 05:43:52-05:00
