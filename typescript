@@ -1,0 +1,278 @@
+Script started on 2020-12-09 07:11:05-05:00
+]777;notify;Command completed;rm typescript ]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ lab authorization-secrets start
+
+Checking prerequisites for Guided Exercise: Managing Sensitive Information With Secrets
+
+ Verify the OpenShift cluster is running:
+ · Router pods are available...................................  [1;36mSUCCESS[0;39m
+ · OAuth pods are available....................................  [1;36mSUCCESS[0;39m
+ · API pods are available......................................  [1;36mSUCCESS[0;39m
+ · Control plane node 'master01' is ready......................  [1;36mSUCCESS[0;39m
+ · Control plane node 'master02' is ready......................  [1;36mSUCCESS[0;39m
+ · Control plane node 'master03' is ready......................  [1;36mSUCCESS[0;39m
+ Checking for conflicts with existing OpenShift projects:
+ · The 'authorization-secrets' project is absent...............  [1;36mSUCCESS[0;39m
+
+Setting up the classroom for Guided Exercise: Managing Sensitive Information With Secrets
+
+ · Create HTPasswd entry for 'admin'...........................  [1;36mSUCCESS[0;39m
+ · Create HTPasswd entry for 'leader'..........................  [1;36mSUCCESS[0;39m
+ · Create HTPasswd entry for 'developer'.......................  [1;36mSUCCESS[0;39m
+ · Create HTPasswd secret: 'localusers'........................  [1;36mSUCCESS[0;39m
+ · Add HTPasswd IdP............................................  [1;36mSUCCESS[0;39m
+ · Assigning the 'cluster-admin' role to the 'admin' user......  [1;36mSUCCESS[0;39m
+ · Pause for creation of first oauth pod.......................  [1;36mSUCCESS[0;39m
+ · Pause for creation of second oauth pod......................  [1;36mSUCCESS[0;39m
+ · Wait up to 1 minute for 'pod/oauth-openshift-c8fd4ffdc-s97mp
+   '...........................................................  [1;36mSUCCESS[0;39m
+ · Wait up to 1 minute for oauth pod containers to be ready....  [1;36mSUCCESS[0;39m
+ · Delete all previous users...................................  [1;36mSUCCESS[0;39m
+ · Delete all previous identities..............................  [1;36mSUCCESS[0;39m
+ · Pause 5 seconds before validating authentication............  [1;36mSUCCESS[0;39m
+ · Validate 'admin' can log in with password 'redhat'..........  [1;36mSUCCESS[0;39m
+ · Validate 'leader' can log in with password 'redhat'.........  [1;36mSUCCESS[0;39m
+ · Validate 'developer' can log in with password 'developer'...  [1;36mSUCCESS[0;39m
+
+Overall start status...........................................  [1;36mSUCCESS[0;39m
+
+]777;notify;Command completed;lab authorization-secrets start]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc login -u developer -p developer https://api .ocp4.example.com:6443
+Login successful.
+
+You don't have any projects. You can try to create a new project, by running
+
+    oc new-project <projectname>
+
+]777;notify;Command completed;oc login -u developer -p developer https://api.ocp4.example.com:6443]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc new-project authorization-secrets
+Now using project "authorization-secrets" on server "https://api.ocp4.example.com:6443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app ruby~https://github.com/sclorg/ruby-ex.git
+
+to build a new example application in Ruby. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node
+
+]777;notify;Command completed;oc new-project authorization-secrets]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc create secret generic mysql \
+> --from-literal user=myuser --from-literal password=redhat123 \
+> --from-literal database=test_secrets --from-literal hostname=mysql 
+secret/mysql created
+]777;notify;Command completed;oc create secret generic mysql --from-literal user=myuser --from-literal password=redhat123 --from-literal database=test_secrets --from-literal hostname=mysql ]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc new-app --name mysql \
+> --docker-image registry.access.redhat.com/rhscl/mysql-57-rhel7:5.7-47
+--> Found container image 77d20f2 (16 months old) from registry.access.redhat.com for "registry.access.redhat.com/rhscl/mysql-57-rhel7:5.7-47"
+
+    MySQL 5.7 
+    --------- 
+    MySQL is a multi-user, multi-threaded SQL database server. The container image provides a containerized packaging of the MySQL mysqld daemon and client application. The mysqld server daemon accepts connections from clients and provides access to content from MySQL databases on behalf of the clients.
+
+    Tags: database, mysql, mysql57, rh-mysql57
+
+    * An image stream tag will be created as "mysql:5.7-47" that will track this image
+
+--> Creating resources ...
+    imagestream.image.openshift.io "mysql" created
+    deployment.apps "mysql" created
+    service "mysql" created
+--> Success
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     'oc expose svc/mysql' 
+    Run 'oc status' to view your app.
+]777;notify;Command completed;oc new-app --name mysql --docker-image registry.access.redhat.com/rhscl/mysql-57-rhel7:5.7-47]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc set env deployment/mysql --from secret/mysq l --prefix MYSQL_
+deployment.apps/mysql updated
+]777;notify;Command completed;oc set env deployment/mysql --from secret/mysql --prefix MYSQL_]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc set volume deployment/mysql --add --type se cret \
+> --mount-path /run/secrets/mysql --secret-name mysql
+info: Generated volume name: volume-44hpk
+deployment.apps/mysql volume updated
+]777;notify;Command completed;oc set volume deployment/mysql --add --type secret --mount-path /run/secrets/mysql --secret-name mysql]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get pod -w
+NAME                     READY   STATUS        RESTARTS   AGE
+mysql-586ccf457-489tb    1/1     Running       0          17s
+mysql-7cd7499d66-qdw72   1/1     Terminating   0          46s
+mysql-7cd7499d66-qdw72   0/1     Terminating   0          48s
+mysql-7cd7499d66-qdw72   0/1     Terminating   0          51s
+mysql-7cd7499d66-qdw72   0/1     Terminating   0          51s
+^C]777;notify;Command completed;oc get pod -w]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc rsh mysql-7cd7499d66-gm2rh[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kmysql-586ccf457-489tb
+[?1034hsh-4.2$ mysql -u myuser --password=redhat123 test_secrets -e 'show databases;'
+mysql: [Warning] Using a password on the command line interface can be insecure.
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| test_secrets       |
++--------------------+
+sh-4.2$ df -h | grep mysql
+tmpfs                                 7.9G   16K  7.9G   1% /run/secrets/mysql
+sh-4.2$ ]777;notify;Command completed;oc rsh mysql-586ccf457-489tb]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ clear
+[3J[H[2J]777;notify;Command completed;clear]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ for FILE in $(ls /run/secrets/mysql)
+> do
+> echo "${FILE}: $(cat /run/secrets/mysql/${FILE})"
+> done
+ls: cannot access '/run/secrets/mysql': No such file or directory
+]777;notify;Command completed;for FILE in $(ls /run/secrets/mysql)  do echo "${FILE}: $(cat /run/secrets/mysql/${FILE})"  done]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ for FILE in $(ls /run/secrets/mysql); do echo ""${FILE}: $(cat /run/secrets/mysql/${FILE})"; done[Aclear[K
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Coc rsh mysql-586ccf457-489tb[15Pget pod -wrsh mysql-586ccf457-489tb
+[?1034hsh-4.2$ for FILE in $(ls /run/secrets/mysql)
+> .pki/do
+sh: syntax error near unexpected token `.pki/do'
+sh-4.2$ echo "${FILE}: $(cat /run/secrets/mysql/${FILE})"
+cat: /run/secrets/mysql/: Is a directory
+: 
+sh-4.2$ done
+sh: syntax error near unexpected token `done'
+sh-4.2$ for FILE in $(ls /run/secrets/mysql); do;echo "${FILE}: $(cat /run/secre ts/mysql/${FILE})";done
+sh: syntax error near unexpected token `;'
+sh-4.2$ ls /run/sem crets/mysql/
+database  hostname  password  user
+sh-4.2$ cat data          cd /run/sr ecrets/mysql/
+sh-4.2$ cat database hostname password user 
+test_secretsmysqlredhat123myusersh-4.2$ exit
+exit
+]777;notify;Command completed;oc rsh mysql-586ccf457-489tb]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc new-app --name quotes \
+> --docker-image quay.io/redhattraining/famous-quotes:2.1
+--> Found container image 7ff1a7b (2 months old) from quay.io for "quay.io/redhattraining/famous-quotes:2.1"
+
+    Quotes 2.1 
+    ---------- 
+    Famous Quotes is a PoC application for Go and MySQL
+
+    Tags: poc, mysql, golang
+
+    * An image stream tag will be created as "quotes:2.1" that will track this image
+
+--> Creating resources ...
+    imagestream.image.openshift.io "quotes" created
+    deployment.apps "quotes" created
+    service "quotes" created
+--> Success
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     'oc expose svc/quotes' 
+    Run 'oc status' to view your app.
+]777;notify;Command completed;oc new-app --name quotes --docker-image quay.io/redhattraining/famous-quotes:2.1]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get pods -l deployment=quotes -w
+NAME                      READY   STATUS              RESTARTS   AGE
+quotes-6b8b7d87ff-pkh4l   0/1     ContainerCreating   0          13s
+quotes-6b8b7d87ff-pkh4l   0/1     Error               0          32s
+quotes-6b8b7d87ff-pkh4l   0/1     Error               1          34s
+quotes-6b8b7d87ff-pkh4l   0/1     CrashLoopBackOff    1          42s
+^C]777;notify;Command completed;oc get pods -l deployment=quotes -w]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc set env deployment/quotes --from secret/mys ql \
+> --prefix QUOTES_
+deployment.apps/quotes updated
+]777;notify;Command completed;oc set env deployment/quotes --from secret/mysql --prefix QUOTES_]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc set env deployment/quotes --from secret/mysqql --prefix QUOTES_[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[11Pget pods -l deployment=quotes -w
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+NAME                      READY   STATUS   RESTARTS   AGE
+quotes-6b8b7d87ff-pkh4l   0/1     Error    2          53s
+^C]777;notify;Command completed;oc get pods -l deployment=quotes -w]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc logs ^C
+]777;notify;Command completed;oc get pods -l deployment=quotes -w]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc logs quotes-6b8b7d87ff-pkh4l
+Error from server (NotFound): pods "quotes-6b8b7d87ff-pkh4l" not found
+]777;notify;Command completed;oc logs quotes-6b8b7d87ff-pkh4l]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc logs quotes-6b8b7d87ff-pkh4lget pods -l deployment=quotes -wset env deployment/quotes --from secret/mysqql --prefix QUOTES_[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[11Pget pods -l deployment=quotes -w
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+NAME                     READY   STATUS    RESTARTS   AGE
+quotes-c6d77f9cd-sdzwk   1/1     Running   0          50s
+^C]777;notify;Command completed;oc get pods -l deployment=quotes -w]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc logs quotes-c6d77f9cd-sdzwk
+2020/12/09 12:20:56 Connecting to the database: myuser:redhat123@tcp(mysql:3306)/test_secrets
+2020/12/09 12:20:56 Database connection OK
+2020/12/09 12:20:56 Creating schema
+2020/12/09 12:20:56 Adding quotes
+2020/12/09 12:20:56 Adding quote: When words fail, music speaks.
+- William Shakespeare
+2020/12/09 12:20:56 Adding quote: Happiness depends upon ourselves.
+- Aristotle
+2020/12/09 12:20:56 Adding quote: The secret of change is to focus all your energy not on fighting the old but on building the new.
+- Socrates
+2020/12/09 12:20:56 Adding quote: Nothing that glitters is gold.
+- Mark Twain
+2020/12/09 12:20:56 Adding quote: Imagination is more important than knowledge.
+- Albert Einstein
+2020/12/09 12:20:56 Adding quote: Hell, if I could explain it to the average person, it wouldn't have been worth the Nobel prize.
+- Richard Feynman
+2020/12/09 12:20:56 Adding quote: Young man, in mathematics you don't understand things. You just get used to them.
+- John von Neumann
+2020/12/09 12:20:56 Adding quote: Those who can imagine anything, can create the impossible.
+- Alan Turing
+2020/12/09 12:20:56 Database Setup Completed
+2020/12/09 12:20:56 Starting Application
+Services:
+/
+/random
+/env
+/status
+]777;notify;Command completed;oc logs quotes-c6d77f9cd-sdzwk]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ clear
+[3J[H[2J]777;notify;Command completed;clear]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc expose service quotes \
+> --hostname quotes.apps.ocp4.example.com
+route.route.openshift.io/quotes exposed
+]777;notify;Command completed;oc expose service quotes --hostname quotes.apps.ocp4.example.com]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc gert r[K[K[K[Kr[Kt routes
+NAME     HOST/PORT                      PATH   SERVICES   PORT       TERMINATION   WILDCARD
+quotes   quotes.apps.ocp4.example.com          quotes     8000-tcp                 None
+]777;notify;Command completed;oc get routes]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ curl quotes.apps.ocp4.example.com
+<html>
+	<head>
+        <title>Quotes</title>
+    </head>
+    <body>
+       
+        <h1>Quote List</h1>
+        
+            <ul>
+                
+                    <li>1: When words fail, music speaks.
+- William Shakespeare
+</li>
+                
+                    <li>2: Happiness depends upon ourselves.
+- Aristotle
+</li>
+                
+                    <li>3: The secret of change is to focus all your energy not on fighting the old but on building the new.
+- Socrates
+</li>
+                
+                    <li>4: Nothing that glitters is gold.
+- Mark Twain</li>
+                
+                    <li>5: Imagination is more important than knowledge.
+- Albert Einstein
+</li>
+                
+                    <li>6: Hell, if I could explain it to the average person, it wouldn&#39;t have been worth the Nobel prize.
+- Richard Feynman
+</li>
+                
+                    <li>7: Young man, in mathematics you don&#39;t understand things. You just get used to them.
+- John von Neumann
+</li>
+                
+                    <li>8: Those who can imagine anything, can create the impossible.
+- Alan Turing
+</li>
+                
+            </ul>
+        
+    </body>
+</html>
+]777;notify;Command completed;curl quotes.apps.ocp4.example.com]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ curl -s http://quotes.apps.ocp4.example.com/st atus
+Database connection OK
+]777;notify;Command completed;curl -s http://quotes.apps.ocp4.example.com/status]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ curl -s http://quotes.apps.ocp4.example.com/ra ndom
+1: When words fail, music speaks.
+- William Shakespeare
+]777;notify;Command completed;curl -s http://quotes.apps.ocp4.example.com/random]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc delete project authorization-secrets
+project.project.openshift.io "authorization-secrets" deleted
+]777;notify;Command completed;oc delete project authorization-secrets]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ ls ../DO280
+[0m[38;5;33mlabs[0m  [38;5;33msolutions[0m
+]777;notify;Command completed;ls ../DO280]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ cp ../[K[K[K-R ../DO280/* .
+]777;notify;Command completed;cp -R ../DO280/* .]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ git status
+On branch authorization-secrets
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	[31mlabs/[m
+	[31msolutions/[m
+	[31mtypescript[m
+
+nothing added to commit but untracked files present (use "git add" to track)
+]777;notify;Command completed;git status]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ lab authorization-secrets finish
+
+Completing Guided Exercise: Managing Sensitive Information With Secrets
+
+
+Please use start if you wish to do the exercise again.
+
+]777;notify;Command completed;lab authorization-secrets finish]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ exit
+
+Script done on 2020-12-09 07:23:56-05:00
