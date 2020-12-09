@@ -1,0 +1,161 @@
+Name:         todo-http-59446d7885-x8j8n
+Namespace:    network-ingress
+Priority:     0
+Node:         master02/192.168.50.11
+Start Time:   Wed, 09 Dec 2020 07:59:57 -0500
+Labels:       app=todo-http
+              name=todo-http
+              pod-template-hash=59446d7885
+Annotations:  k8s.v1.cni.cncf.io/network-status:
+                [{
+                    "name": "openshift-sdn",
+                    "interface": "eth0",
+                    "ips": [
+                        "10.8.0.24"
+                    ],
+                    "default": true,
+                    "dns": {}
+                }]
+              k8s.v1.cni.cncf.io/networks-status:
+                [{
+                    "name": "openshift-sdn",
+                    "interface": "eth0",
+                    "ips": [
+                        "10.8.0.24"
+                    ],
+                    "default": true,
+                    "dns": {}
+                }]
+              openshift.io/scc: restricted
+Status:       Running
+IP:           10.8.0.24
+IPs:
+  IP:           10.8.0.24
+Controlled By:  ReplicaSet/todo-http-59446d7885
+Containers:
+  todo-http:
+    Container ID:   cri-o://00af5cc33ea736ff986817d19fe86a7b4aaf32cb6631306d03899c13faa4594f
+    Image:          quay.io/redhattraining/todo-angular:v1.1
+    Image ID:       quay.io/redhattraining/todo-angular@sha256:85a6d143977e80a274b31839d477e529339545b97832f45318cd9ae8d3049899
+    Port:           8080/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Wed, 09 Dec 2020 08:00:13 -0500
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:  500m
+    Requests:
+      cpu:        500m
+    Environment:  <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-x74md (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             True 
+  ContainersReady   True 
+  PodScheduled      True 
+Volumes:
+  default-token-x74md:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-x74md
+    Optional:    false
+QoS Class:       Burstable
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/memory-pressure:NoSchedule
+                 node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:
+  Type    Reason          Age        From               Message
+  ----    ------          ----       ----               -------
+  Normal  Scheduled       <unknown>  default-scheduler  Successfully assigned network-ingress/todo-http-59446d7885-x8j8n to master02
+  Normal  AddedInterface  15m        multus             Add eth0 [10.8.0.24/23]
+  Normal  Pulling         15m        kubelet, master02  Pulling image "quay.io/redhattraining/todo-angular:v1.1"
+  Normal  Pulled          15m        kubelet, master02  Successfully pulled image "quay.io/redhattraining/todo-angular:v1.1"
+  Normal  Created         15m        kubelet, master02  Created container todo-http
+  Normal  Started         15m        kubelet, master02  Started container todo-http
+
+
+Name:         todo-https-85bff5b996-xwknv
+Namespace:    network-ingress
+Priority:     0
+Node:         master01/192.168.50.10
+Start Time:   Wed, 09 Dec 2020 08:14:12 -0500
+Labels:       app=todo-https
+              name=todo-https
+              pod-template-hash=85bff5b996
+Annotations:  k8s.v1.cni.cncf.io/network-status:
+                [{
+                    "name": "openshift-sdn",
+                    "interface": "eth0",
+                    "ips": [
+                        "10.10.0.37"
+                    ],
+                    "default": true,
+                    "dns": {}
+                }]
+              k8s.v1.cni.cncf.io/networks-status:
+                [{
+                    "name": "openshift-sdn",
+                    "interface": "eth0",
+                    "ips": [
+                        "10.10.0.37"
+                    ],
+                    "default": true,
+                    "dns": {}
+                }]
+              openshift.io/scc: restricted
+Status:       Running
+IP:           10.10.0.37
+IPs:
+  IP:           10.10.0.37
+Controlled By:  ReplicaSet/todo-https-85bff5b996
+Containers:
+  todo-https:
+    Container ID:   cri-o://dd8375be71f81352aed9a449b0ea0c6d296f50783fefb2f281fc24279742831b
+    Image:          quay.io/redhattraining/todo-angular:v1.2
+    Image ID:       quay.io/redhattraining/todo-angular@sha256:4da0657631ea97c3c93d14592500e129eb61efafa4a60ac13939f8e615a8a0d0
+    Ports:          8080/TCP, 8443/TCP
+    Host Ports:     0/TCP, 0/TCP
+    State:          Running
+      Started:      Wed, 09 Dec 2020 08:14:22 -0500
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:  500m
+    Requests:
+      cpu:        500m
+    Environment:  <none>
+    Mounts:
+      /usr/local/etc/ssl/certs from tls-certs (ro)
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-x74md (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             True 
+  ContainersReady   True 
+  PodScheduled      True 
+Volumes:
+  tls-certs:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  todo-certs
+    Optional:    false
+  default-token-x74md:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-x74md
+    Optional:    false
+QoS Class:       Burstable
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/memory-pressure:NoSchedule
+                 node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:
+  Type    Reason          Age        From               Message
+  ----    ------          ----       ----               -------
+  Normal  Scheduled       <unknown>  default-scheduler  Successfully assigned network-ingress/todo-https-85bff5b996-xwknv to master01
+  Normal  AddedInterface  92s        multus             Add eth0 [10.10.0.37/23]
+  Normal  Pulling         92s        kubelet, master01  Pulling image "quay.io/redhattraining/todo-angular:v1.2"
+  Normal  Pulled          84s        kubelet, master01  Successfully pulled image "quay.io/redhattraining/todo-angular:v1.2"
+  Normal  Created         84s        kubelet, master01  Created container todo-https
+  Normal  Started         84s        kubelet, master01  Started container todo-https
