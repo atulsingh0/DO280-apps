@@ -1,0 +1,439 @@
+Script started on 2020-12-09 07:36:41-05:00
+]777;notify;Command completed;ls ../DO280/*/*]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ lab network-sdn start
+
+Checking prerequisites for Guided Exercise: Troubleshooting OpenShift Software-Defined Networking
+
+ Verify the OpenShift cluster is running:
+ · Router pods are available...................................  [1;36mSUCCESS[0;39m
+ · OAuth pods are available....................................  [1;36mSUCCESS[0;39m
+ · API pods are available......................................  [1;36mSUCCESS[0;39m
+ · Control plane node 'master01' is ready......................  [1;36mSUCCESS[0;39m
+ · Control plane node 'master02' is ready......................  [1;36mSUCCESS[0;39m
+ · Control plane node 'master03' is ready......................  [1;36mSUCCESS[0;39m
+ Checking for conflicts with existing OpenShift projects:
+ · The 'network-sdn' project is absent.........................  [1;36mSUCCESS[0;39m
+
+Setting up the classroom for Guided Exercise: Troubleshooting OpenShift Software-Defined Networking
+
+ · Validate 'admin' can log in with password 'redhat'..........  [1;36mSUCCESS[0;39m
+ · Validate 'leader' can log in with password 'redhat'.........  [1;36mSUCCESS[0;39m
+ · Validate 'developer' can log in with password 'developer'...  [1;36mSUCCESS[0;39m
+ Preparing the student's workstation:
+ · Download exercise files.....................................  [1;36mSUCCESS[0;39m
+ · Download solution files.....................................  [1;36mSUCCESS[0;39m
+
+Overall start status...........................................  [1;36mSUCCESS[0;39m
+
+]777;notify;Command completed;lab network-sdn start]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc login -u developer -p developer https://api .ocp4.example.com:6443
+Login successful.
+
+You don't have any projects. You can try to create a new project, by running
+
+    oc new-project <projectname>
+
+]777;notify;Command completed;oc login -u developer -p developer https://api.ocp4.example.com:6443]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc new-project network-sdn
+Now using project "network-sdn" on server "https://api.ocp4.example.com:6443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app ruby~https://github.com/sclorg/ruby-ex.git
+
+to build a new example application in Ruby. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node
+
+]777;notify;Command completed;oc new-project network-sdn]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ cd ~/DO280/labs/network-sdn
+]777;notify;Command completed;cd ~/DO280/labs/network-sdn]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ ls
+db-data.sql  todo-db.yaml  todo-frontend.yaml
+]777;notify;Command completed;ls]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc create -f todo-db.yaml
+deployment.apps/mysql created
+service/mysql created
+]777;notify;Command completed;oc create -f todo-db.yaml]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc status
+In project network-sdn on server https://api.ocp4.example.com:6443
+
+svc/mysql - 172.30.26.228:3306
+  deployment/mysql deploys mysql:8.0
+    deployment #1 running for 4 seconds - 0/1 pods
+
+
+1 info identified, use 'oc status --suggest' to see details.
+]777;notify;Command completed;oc status]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc get pods
+NAME                     READY   STATUS              RESTARTS   AGE
+mysql-8666449d8b-mdkgg   0/1     ContainerCreating   0          12s
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc get pods
+NAME                     READY   STATUS    RESTARTS   AGE
+mysql-8666449d8b-mdkgg   1/1     Running   0          20s
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc cp db-data.sql mysql-8666449d8b-mdkgg:/tmp /
+]777;notify;Command completed;oc cp db-data.sql mysql-8666449d8b-mdkgg:/tmp/]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc rsh mysql-94dc6645b-mdkgg
+Error from server (NotFound): pods "mysql-94dc6645b-mdkgg" not found
+]777;notify;Command completed;oc rsh mysql-94dc6645b-mdkgg]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc rsh mysql-94dc6645b-mdkgg[1P-mdkgg[1P-mdkgg[1P-mdkgg[1P-mdkgg[1P-mdkgg[1P-mdkgg[1P-mdkgg[1P-mdkgg[1P-mdkgg[1Pmdkgg[1P-mdkgg[1P-mdkgg[1P-mdkgg[1P-mdkgg[1P-mdkgg[C[C[C[C[C[C[K[K[K[K[K[Kmysql-8666449d8b-mdkgg
+$ mysql -u root -p$MYSQL_ROOT_PASSWORD items -e "show tables;"
+mysql: [Warning] Using a password on the command line interface can be insecure.
+$ mysql -u root -p$MYSQL_ROOT_PASSWORD items < /tmp/db-data.sql
+mysql: [Warning] Using a password on the command line interface can be insecure.
+$ ^[[A^[[A        ^[k   mysql -u root -p$MYSQL_ROOT_PASSWORD items -e "show tables;"
+mysql: [Warning] Using a password on the command line interface can be insecure.
++-----------------+
+| Tables_in_items |
++-----------------+
+| Item            |
++-----------------+
+$ exit
+]777;notify;Command completed;oc rsh mysql-8666449d8b-mdkgg]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc create -f todo-frontend.yaml
+deployment.apps/frontend created
+service/frontend created
+]777;notify;Command completed;oc create -f todo-frontend.yaml]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc get pods
+NAME                        READY   STATUS    RESTARTS   AGE
+frontend-5598cfc446-pc6sl   0/1     Pending   0          3s
+mysql-8666449d8b-mdkgg      1/1     Running   0          3m
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc get pods
+NAME                        READY   STATUS              RESTARTS   AGE
+frontend-5598cfc446-pc6sl   0/1     ContainerCreating   0          6s
+mysql-8666449d8b-mdkgg      1/1     Running             0          3m3s
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc get pods -w
+NAME                        READY   STATUS              RESTARTS   AGE
+frontend-5598cfc446-pc6sl   0/1     ContainerCreating   0          9s
+mysql-8666449d8b-mdkgg      1/1     Running             0          3m6s
+frontend-5598cfc446-pc6sl   1/1     Running             0          20s
+^Z
+[1]+  Stopped                 oc get pods -w
+]777;notify;Command completed;oc get pods -w]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc expose service frontend \
+> >    --hostname todo.apps.ocp4.example.com[1P
+route.route.openshift.io/frontend exposed
+]777;notify;Command completed;oc expose service frontend     --hostname todo.apps.ocp4.example.com]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc get routes
+NAME       HOST/PORT                    PATH   SERVICES   PORT   TERMINATION   WILDCARD
+frontend   todo.apps.ocp4.example.com          frontend   8080                 None
+]777;notify;Command completed;oc get routes]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc get routesexpose service frontend     --hostname todoo.apps.ocp4.example.com[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cget pods -w[K
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+NAME                        READY   STATUS    RESTARTS   AGE
+frontend-5598cfc446-pc6sl   1/1     Running   0          42s
+mysql-8666449d8b-mdkgg      1/1     Running   0          3m39s
+^C]777;notify;Command completed;oc get pods -w]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ clear
+[3J[H[2J]777;notify;Command completed;clear]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc get pof[Kds
+NAME                        READY   STATUS    RESTARTS   AGE
+frontend-5598cfc446-pc6sl   1/1     Running   0          100s
+mysql-8666449d8b-mdkgg      1/1     Running   0          4m37s
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc logs frontend-5598cfc446-pc6sl
+App is ready at : 8080
+]777;notify;Command completed;oc logs frontend-5598cfc446-pc6sl]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc get service/mysql \
+> >    -o jsonpath="{.spec.clusterIP}{'\n'}"[C[C[1P[1P
+172.30.26.228
+]777;notify;Command completed;oc get service/mysql    -o jsonpath="{.spec.clusterIP}{'\n'}"]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc debug -t deployment/frontend
+Starting pod/frontend-debug ...
+Pod IP: 10.8.0.20
+If you don't see a command prompt, try pressing enter.
+[Ksh-4.2$ curl -v telnet://172.30.103.29:33063[1P[1P[1P[1@2[1@6.29[1P[1P[1@2[1@2[1@8
+* About to connect() to 172.30.26.228 port 3306 (#0)
+*   Trying 172.30.26.228...
+* Connected to 172.30.26.228 (172.30.26.228) port 3306 (#0)
+J   
+* RCVD IAC 2
+* RCVD IAC 199
+* Closing connection 0
+8.0.22    1wA! �           nx)7ML|\[%L3 caching_sha2_password sh-4.2$ 
+sh-4.2$ oc get service/frontend \
+>    -o jsonpath="{.spec.clusterIP}{'\n'}"
+sh: oc: command not found
+sh-4.2$ exit
+
+Removing debug pod ...
+]777;notify;Command completed;oc debug -t deployment/frontend]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc debug -t deployment/frontend
+Starting pod/frontend-debug ...
+^C
+Removing debug pod ...
+]777;notify;Command completed;oc debug -t deployment/frontend]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc get service/frontend \
+>    -o jsonpath="{.spec.clusterIP}{'\n'}"
+172.30.204.251
+]777;notify;Command completed;oc get service/frontend    -o jsonpath="{.spec.clusterIP}{'\n'}"]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ clear
+[3J[H[2J]777;notify;Command completed;clear]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc debug -t deployment/mysql \
+>    --image registry.access.redhat.com/ubi8/ubi:8.0
+Starting pod/mysql-debug ...
+Pod IP: 10.8.0.22
+If you don't see a command prompt, try pressing enter.
+[Ksh-4.4$ curl -m 10 -v http://172.30.204.251:8080
+* Rebuilt URL to: http://172.30.204.251:8080/
+*   Trying 172.30.204.251...
+* TCP_NODELAY set
+* Connection timed out after 10000 milliseconds
+* Closing connection 0
+curl: (28) Connection timed out after 10000 milliseconds
+sh-4.4$ exit
+exit
+
+Removing debug pod ...
+]777;notify;Command completed;oc debug -t deployment/mysql    --image registry.access.redhat.com/ubi8/ubi:8.0]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc get pods -o wide -l name=frontend
+NAME                        READY   STATUS    RESTARTS   AGE     IP           NODE       NOMINATED NODE   READINESS GATES
+frontend-5598cfc446-pc6sl   1/1     Running   0          5m47s   10.10.0.35   master01   <none>           <none>
+]777;notify;Command completed;oc get pods -o wide -l name=frontend]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc debug -t deployment/mysql \
+>    --image registry.access.redhat.com/ubi8/ubi:8.0
+Starting pod/mysql-debug ...
+Pod IP: 10.8.0.23
+If you don't see a command prompt, try pressing enter.
+[Ksh-4.4$ curl -v http://10.128.2.61:8080/todo/[1P[1P[1P[1P[1P[1P[1P[1P[1@1[1@0[1@.[1@0[1@.[1@3[1@5
+*   Trying 10.10.0.35...
+* TCP_NODELAY set
+* Connected to 10.10.0.35 (10.10.0.35) port 8080 (#0)
+> GET /todo/ HTTP/1.1
+> Host: 10.10.0.35:8080
+> User-Agent: curl/7.61.1
+> Accept: */*
+> 
+< HTTP/1.1 200 OK
+< Server: restify
+< Cache-Control: public, max-age=3600
+< Content-Length: 4508
+< Content-Type: text/html
+< Last-Modified: Thu, 05 Dec 2019 22:50:51 GMT
+< Connection: Keep-Alive
+< Date: Wed, 09 Dec 2020 12:48:11 GMT
+< Request-Id: f157b54f-2e93-40fa-940a-0be3875f51ef
+< Response-Time: 8
+< 
+<!DOCTYPE html>
+
+<html ng-app="items">
+<head>
+    <title>To Do List</title>
+
+    <link rel="stylesheet" href="lib/dependencies/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="lib/dependencies/css/ng-grid.min.css" />
+
+    <!-- build:css css/application.css -->
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <!-- endbuild -->
+
+    <script src="lib/dependencies/jquery.min.js"></script>
+    <script src="lib/dependencies/angular.min.js"></script>
+    <script src="lib/dependencies/angular-resource.min.js"></script>
+    <script src="lib/dependencies/ng-grid-2.0.11.min.js"></script>
+    <script src="lib/dependencies/ui-bootstrap-tpls.min.js"></script>
+
+    <!-- build:js script/all.js -->
+    <script src="script/item.js"></script>
+    <!-- endbuild -->
+</head>
+
+<body>
+
+<h1>To Do List Application</h1>
+
+<br/>
+
+<!-- Specify a Angular controller script that binds Javascript variables to the feedback messages.-->
+<div class="message" ng-controller="alertMessagesController">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+</div>
+
+<br>
+
+<!-- Specify a Angular controller script that binds Javascript variables to the grid.-->
+<div class="grid" ng-controller="itemsListController">
+    <div>
+        <h3>To Do List</h3>
+    </div>
+
+    <!-- Binds the grid component to be displayed. -->
+    <div class="gridStyle" ng-grid="gridOptions"></div>
+
+    <!--  Bind the pagination component to be displayed. -->
+    <pagination direction-links="true" boundary-links="true"
+                total-items="items.totalResults" items-per-page="items.pageSize"
+                ng-model="items.currentPage" ng-change="refreshGrid()">
+    </pagination>
+</div>
+
+<!-- Specify a Angular controller script that binds Javascript variables to the form.-->
+<div class="form" ng-controller="itemsFormController">
+    <!-- Verify item, if there is no id present, that we are Adding a Item -->
+    <div ng-if="item.id == null">
+        <h3>Add Task</h3>
+    </div>
+    <!-- Otherwise it's an Edit -->
+    <div ng-if="item.id != null">
+        <h3>Edit Task</h3>
+    </div>
+
+    <div>
+        <!-- Specify the function to be called on submit and disable HTML5 validation, since we're using Angular validation-->
+        <form name="itemForm" ng-submit="updateItem()" novalidate>
+
+            <!-- Display an error if the input is invalid and is dirty (only when someone changes the value) -->
+            <div class="form-group" ng-class="{'has-error' : itemForm.description.$invalid && itemForm.description.$dirty}">
+                <label for="description">Description:</label>
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : itemForm.description.$valid && itemForm.description.$dirty}"></span>
+
+                <input id="description" name="description" type="text" class="form-control" maxlength="100"
+                       ng-model="item.description"
+                       required ng-minlength="5" ng-maxlength="100"/>
+
+                <!-- Validation messages to be displayed on required, minlength and maxlength -->
+                <p class="help-block" ng-show="itemForm.description.$error.required">Add Description.</p>
+                <p class="help-block" ng-show="itemForm.description.$error.minlength">Description must be at least 5 characters long.</p>
+                <p class="help-block" ng-show="itemForm.description.$error.maxlength">Description cannot be longer than 100 characters.</p>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error' : itemForm.done.$invalid && itemForm.done.$dirty}">
+                <label for="done">Completed:</label>
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : itemForm.done.$valid && itemForm.done.$dirty}"></span>
+
+                <input id="done" name="done" type="checkbox" class="form-control"
+                       ng-model="item.done" />
+
+            </div>
+
+            <!-- Form buttons. The 'Save' button is only enabled when the form is valid. -->
+            <div class="buttons">
+                <button type="button" class="btn btn-primary" ng-click="clearForm()">Clear</button>
+                <button type="submit" class="btn btn-primary" ng-disabled="itemForm.$invalid">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
+* Connection #0 to host 10.10.0.35 left intact
+sh-4.4$ exit
+exit
+
+Removing debug pod ...
+]777;notify;Command completed;oc debug -t deployment/mysql    --image registry.access.redhat.com/ubi8/ubi:8.0]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc get svc
+NAME       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+frontend   ClusterIP   172.30.204.251   <none>        8080/TCP   8m4s
+mysql      ClusterIP   172.30.26.228    <none>        3306/TCP   11m
+]777;notify;Command completed;oc get svc]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc describe svc/frontend
+Name:              frontend
+Namespace:         network-sdn
+Labels:            app=todonodejs
+                   name=frontend
+Annotations:       <none>
+Selector:          name=api
+Type:              ClusterIP
+IP:                172.30.204.251
+Port:              <unset>  8080/TCP
+TargetPort:        8080/TCP
+Endpoints:         <none>
+Session Affinity:  None
+Events:            <none>
+]777;notify;Command completed;oc describe svc/frontend]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc describe deployment/frontend | grep Labetl s[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Kls [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ks
+[01;31m[KLabels[m[K:                 app=todonodejs
+  [01;31m[KLabels[m[K:  app=todonodejs
+]777;notify;Command completed;oc describe deployment/frontend | grep Labels]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc describe deployment/frontend | grep Labels  -A1
+[01;31m[KLabels[m[K:                 app=todonodejs
+                        name=frontend
+[36m[K--[m[K
+  [01;31m[KLabels[m[K:  app=todonodejs
+           name=frontend
+]777;notify;Command completed;oc describe deployment/frontend | grep Labels -A1]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc edit svc/frontend
+[?2004h[?1049h[22;0;0t[?1h=[?2004h[1;24r[?12h[?12l[27m[23m[29m[m[H[2J[?25l[24;1H"/tmp/oc-edit-mzxf5.yaml" 53L, 1239C[1;1H# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this fii[3;1Hle will be
+# reopened with the relevant failures.
+#
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2020-12-09T12:40:42Z"
+  labels:
+    app: todonodejs
+    name: frontend
+  managedFields:
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:[17;7Hf:metadata:[18;9Hf:labels:[19;11H.: {}[20;11Hf:app: {}[21;11Hf:name: {}[22;7Hf:spec:[23;9Hf:ports:[1;1H[?25h
+
+
+
+
+
+
+
+
+
+    a[10;6H[11;6Hpp: [12;10H[13;10H[14;10H[15;10H[16;10H[17;10H[18;10H[?25l[1;23r[23;1H
+[1;24r[23;11H.: {}[24;1H[K[18;10H[?25h[?25l[1;23r[1;1H[2M[1;24r[22;11Hk:{"port":8080,"protocol":"TCP"}:[23;13H.: {}[17;10H[?25h[18;10H[?25l[1;23r[23;1H
+[1;24r[23;13Hf:port: {}[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;13Hf:protocol: {}[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;13Hf:targetPort: {}[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;9Hf:selector:[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;11H.: {}[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;11Hf:name: {}[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;9Hf:sessionAffinity: {}[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;9Hf:type: {}[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;5Hmanager: oc[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;5Hoperation: Update[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;5Htime: "2020-12-09T12:40:42Z"[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;3Hname: frontend[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;3Hnamespace: network-sdn[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;3HresourceVersion: "84589"[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;3HselfLink: /api/v1/namespaces/network-sdn/services/frontend[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;3Huid: 54277090-5bf4-41bb-b3a7-488fe9688bbd[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;1Hspec:[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;3HclusterIP: 172.30.204.251[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;3Hports:[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;3H- port: 8080[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;5Hprotocol: TCP[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;5HtargetPort: 8080[18;5H[?25h[?25l[1;23r[23;1H
+[1;24r[23;3Hselector:[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;5Hname: api[18;8H[?25h[?25l[1;23r[23;1H
+[1;24r[23;3HsessionAffinity: None[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;3Htype: ClusterIP[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;1Hstatus:[18;10H[?25h[?25l[1;23r[23;1H
+[1;24r[23;3HloadBalancer: {}[18;10H[?25h[19;10H [?25l[19;11H[K[19;10H[?25h[?25l[24;1H[1m-- INSERT --[19;11H[?25h[?25l[mf[?25h[?25lr[?25h[?25lo[?25h[?25ln[?25h[?25lt[?25h[?25le[?25h[?25ln[?25h[?25ld[?25h[24;1H[K[19;18H[?25l[?25h[?2004l[?25l[24;1H"/tmp/oc-edit-mzxf5.yaml" 53L, 1244C written
+[?2004l[?1l>[?25h[?1049l[23;0;0tservice/frontend edited
+]777;notify;Command completed;oc edit svc/frontend]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ oc describe svc/frontend
+Name:              frontend
+Namespace:         network-sdn
+Labels:            app=todonodejs
+                   name=frontend
+Annotations:       <none>
+Selector:          name=frontend
+Type:              ClusterIP
+IP:                172.30.204.251
+Port:              <unset>  8080/TCP
+TargetPort:        8080/TCP
+Endpoints:         10.10.0.35:8080
+Session Affinity:  None
+Events:            <none>
+]777;notify;Command completed;oc describe svc/frontend]0;student@workstation:~/DO280/labs/network-sdn]7;file://workstation.lab.example.com/home/student/DO280/labs/network-sdn[student@workstation network-sdn]$ cd
+]777;notify;Command completed;cd]0;student@workstation:~]7;file://workstation.lab.example.com/home/student[student@workstation ~]$ cd DO280-apps/
+]777;notify;Command completed;cd DO280-apps/]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ cp -R ../DO280/* .
+]777;notify;Command completed;cp -R ../DO280/* .]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	[32mnew file:   typescript[m
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	[31mmodified:   typescript[m
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	[31mlabs/[m
+	[31msolutions/[m
+
+]777;notify;Command completed;git status]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc delete project network-sdn
+project.project.openshift.io "network-sdn" deleted
+]777;notify;Command completed;oc delete project network-sdn]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ lab network-sdn finish
+
+Completing Guided Exercise: Troubleshooting OpenShift Software-Defined Networking
+
+ · Remove exercise files.......................................  [1;36mSUCCESS[0;39m
+ · Remove solution files.......................................  [1;36mSUCCESS[0;39m
+
+Please use start if you wish to do the exercise again.
+
+]777;notify;Command completed;lab network-sdn finish]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ exit
+There are stopped jobs.
+]777;notify;Command completed;lab network-sdn finish]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ exit
+
+Script done on 2020-12-09 07:52:46-05:00
