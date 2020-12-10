@@ -1,0 +1,600 @@
+Script started on 2020-12-09 22:11:54-05:00
+]777;notify;Command completed;cd]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ gi[K[Koc new-project schedule-pods 
+Now using project "schedule-pods" on server "https://api.ocp4.example.com:6443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app ruby~https://github.com/sclorg/ruby-ex.git
+
+to build a new example application in Ruby. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node
+
+]777;notify;Command completed;oc new-project schedule-pods ]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc login -u developer -p developer https://api.ocp4.example.com:6443
+
+Login successful.
+
+You don't have any projects. You can try to create a new project, by running
+
+    oc new-project <projectname>
+
+]777;notify;Command completed;oc login -u developer -p developer https://api.ocp4.example.com:6443]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ 
+]777;notify;Command completed;oc login -u developer -p developer https://api.ocp4.example.com:6443]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc new-app --name hello \
+>   --docker-image quay.io/redhattraining/hello-world-nginx:v1.0
+error: can't lookup images: imagestreamimports.image.openshift.io is forbidden: User "developer" cannot create resource "imagestreamimports" in API group "image.openshift.io" in the namespace "default"
+error: unable to locate any local docker images with name "quay.io/redhattraining/hello-world-nginx:v1.0"
+
+The 'oc new-app' command will match arguments to the following types:
+
+  1. Images tagged into image streams in the current project or the 'openshift' project
+     - if you don't specify a tag, we'll add ':latest'
+  2. Images in the Docker Hub, on remote registries, or on the local Docker engine
+  3. Templates in the current project or the 'openshift' project
+  4. Git repository URLs or local paths that point to Git repositories
+
+--allow-missing-images can be used to point to an image that does not exist yet.
+
+See 'oc new-app -h' for examples.
+]777;notify;Command completed;oc new-app --name hello   --docker-image quay.io/redhattraining/hello-world-nginx:v1.0]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc new-app --name hello   --docker-image quay.io/redhattraining/hello-world-ngiinx:v1.0[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[10Plogin -u developer -p developer https://api.ocp4.example.com:6443
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[39Pnew-project schedule-pods 
+Error from server (AlreadyExists): project.project.openshift.io "schedule-pods" already exists
+]777;notify;Command completed;oc new-project schedule-pods ]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc new-project schedule-pods app --name hello   --docker-image quay.io/redhattraining/hello-world-ngiinx:v1.0[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[10Plogin -u developer -p developer https://api.ocp4.example.com:6443
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+Login successful.
+
+You don't have any projects. You can try to create a new project, by running
+
+    oc new-project <projectname>
+
+]777;notify;Command completed;oc login -u developer -p developer https://api.ocp4.example.com:6443]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc login -u developer -p developer https://api.ocp4.example.com:6443[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[39Pnew-project schedule-pods [K
+Error from server (AlreadyExists): project.project.openshift.io "schedule-pods" already exists
+]777;notify;Command completed;oc new-project schedule-pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc new-project schedule-pods[C[1P[1P[1P[1P
+error: You are not a member of project "schedule-pods".
+You are not a member of any projects. You can request a project to be created with the 'new-project' command.
+]777;notify;Command completed;oc project schedule-pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc project schedule-pods[4@new-[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Clogin -u developer -p developer https://api.ocp4.example.com:6443[1P[1P[1P[1P[1P[1P[1P[1P[1P[1@a[1@d[1@m[1@i[1@n[C[C[C[C[C[C[C[C[C[C[C[C[C[1P https://api.ocp4.example.com:6443[1P https://api.ocp4.example.com:6443[1P https://api.ocp4.example.com:6443[1P https://api.ocp4.example.com:6443[1P https://api.ocp4.example.com:6443[1P https://api.ocp4.example.com:6443[1P https://api.ocp4.example.com:6443[1P https://api.ocp4.example.com:6443[1P https://api.ocp4.example.com:6443r https://api.ocp4.example.com:6443e https://api.ocp4.example.com:6443d https://api.ocp4.example.com:6443h https://api.ocp4.example.com:6443a https://api.ocp4.example.com:6443t https://api.ocp4.example.com:6443
+Login successful.
+
+You have access to 59 projects, the list has been suppressed. You can list all projects with 'oc projects'
+
+Using project "default".
+]777;notify;Command completed;oc login -u admin -p redhat https://api.ocp4.example.com:6443]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc delete r[Kproject schedule-pods
+project.project.openshift.io "schedule-pods" deleted
+]777;notify;Command completed;oc delete project schedule-pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc delete project schedule-podslogin -u admin -p redhat https://api.ocp4.example.com:6443[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[37Pproject schedule-podslogin -u admin -p redhat https://api.ocp4.example.com:6443
+Login successful.
+
+You have access to 59 projects, the list has been suppressed. You can list all projects with 'oc projects'
+
+Using project "default".
+]777;notify;Command completed;oc login -u admin -p redhat https://api.ocp4.example.com:6443]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc login -u admin -p redhat https://api.ocp4.example.com:6443[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[30Pdelete project schedule-podslogin -u admin -p redhat https://api.ocp4.example.com:6443[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[37Pproject schedule-pods[4@new-[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+Now using project "schedule-pods" on server "https://api.ocp4.example.com:6443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app ruby~https://github.com/sclorg/ruby-ex.git
+
+to build a new example application in Ruby. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node
+
+]777;notify;Command completed;oc new-project schedule-pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc new-project schedule-podslogin -u admin -p redhat https://api.ocp4.example.com:6443[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[30Pdelete project schedule-podslogin -u admin -p redhat https://api.ocp4.example.com:6443[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[37Pproject schedule-pods[4@new-[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Clogin -u developer -p developer https://api.ocp4.example.com:6443[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[39Pnew-project schedule-pods app --name hello   --docker-image quay.io/redhattraining/hello-world-ngiinx:v1.0[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[10Plogin -u developer -p developer https://api.ocp4.example.com:6443
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cnew-app --name hello   --docker-image quay.io/redhattraining/hello-world-ngiinx:v1.0
+--> Found container image 44eaa13 (17 months old) from quay.io for "quay.io/redhattraining/hello-world-nginx:v1.0"
+
+    Red Hat Universal Base Image 8 
+    ------------------------------ 
+    The Universal Base Image is designed and engineered to be the base layer for all of your containerized applications, middleware and utilities. This base image is freely redistributable, but Red Hat only supports Red Hat technologies through subscriptions for Red Hat products. This image is maintained by Red Hat and updated regularly.
+
+    Tags: base rhel8
+
+    * An image stream tag will be created as "hello:v1.0" that will track this image
+
+--> Creating resources ...
+    imagestream.image.openshift.io "hello" created
+    deployment.apps "hello" created
+    service "hello" created
+--> Success
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     'oc expose svc/hello' 
+    Run 'oc status' to view your app.
+]777;notify;Command completed;oc new-app --name hello   --docker-image quay.io/redhattraining/hello-world-nginx:v1.0]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ ooc new-app --name hello \
+>   --docker-image quay.io/redhattraining/hello-world-nginx:v1.0^C
+]777;notify;Command completed;ooc new-app --name hello \]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc expose svc/hello
+route.route.openshift.io/hello exposed
+]777;notify;Command completed;oc expose svc/hello]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc scale --replicas 4 deployment/hello
+deployment.apps/hello scaled
+]777;notify;Command completed;oc scale --replicas 4 deployment/hello]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get pods
+NAME                     READY   STATUS              RESTARTS   AGE
+hello-6c4984d949-gt52s   0/1     ContainerCreating   0          2s
+hello-6c4984d949-lc64q   0/1     ContainerCreating   0          2s
+hello-6c4984d949-rpntt   0/1     ContainerCreating   0          2s
+hello-6c4984d949-x89kz   1/1     Running             0          31s
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get pods
+NAME                     READY   STATUS              RESTARTS   AGE
+hello-6c4984d949-gt52s   1/1     Running             0          6s
+hello-6c4984d949-lc64q   0/1     ContainerCreating   0          6s
+hello-6c4984d949-rpntt   0/1     ContainerCreating   0          6s
+hello-6c4984d949-x89kz   1/1     Running             0          35s
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get pods
+NAME                     READY   STATUS              RESTARTS   AGE
+hello-6c4984d949-gt52s   1/1     Running             0          8s
+hello-6c4984d949-lc64q   0/1     ContainerCreating   0          8s
+hello-6c4984d949-rpntt   0/1     ContainerCreating   0          8s
+hello-6c4984d949-x89kz   1/1     Running             0          37s
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get pods
+NAME                     READY   STATUS              RESTARTS   AGE
+hello-6c4984d949-gt52s   1/1     Running             0          9s
+hello-6c4984d949-lc64q   0/1     ContainerCreating   0          9s
+hello-6c4984d949-rpntt   0/1     ContainerCreating   0          9s
+hello-6c4984d949-x89kz   1/1     Running             0          38s
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get pods -w
+NAME                     READY   STATUS              RESTARTS   AGE
+hello-6c4984d949-gt52s   1/1     Running             0          11s
+hello-6c4984d949-lc64q   0/1     ContainerCreating   0          11s
+hello-6c4984d949-rpntt   0/1     ContainerCreating   0          11s
+hello-6c4984d949-x89kz   1/1     Running             0          40s
+hello-6c4984d949-lc64q   1/1     Running             0          14s
+hello-6c4984d949-rpntt   1/1     Running             0          16s
+^C]777;notify;Command completed;oc get pods -w]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ clear
+[3J[H[2J]777;notify;Command completed;clear]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ clearoc get pods -w[K
+NAME                     READY   STATUS    RESTARTS   AGE
+hello-6c4984d949-gt52s   1/1     Running   0          42s
+hello-6c4984d949-lc64q   1/1     Running   0          42s
+hello-6c4984d949-rpntt   1/1     Running   0          42s
+hello-6c4984d949-x89kz   1/1     Running   0          71s
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc login -u admin -p redhat
+Login successful.
+
+You have access to 59 projects, the list has been suppressed. You can list all projects with 'oc projects'
+
+Using project "schedule-pods".
+]777;notify;Command completed;oc login -u admin -p redhat]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get nodes -L env
+NAME       STATUS   ROLES           AGE    VERSION           ENV
+master01   Ready    master,worker   126d   v1.18.3+012b3ec   
+master02   Ready    master,worker   126d   v1.18.3+012b3ec   
+master03   Ready    master,worker   126d   v1.18.3+012b3ec   
+]777;notify;Command completed;oc get nodes -L env]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc label node master01 env=dev
+error: You must be logged in to the server (Unauthorized)
+]777;notify;Command completed;oc label node master01 env=dev]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc label node master02 env=prod
+node/master02 labeled
+]777;notify;Command completed;oc label node master02 env=prod]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc label node master02 env=prod[1P1 env=dev
+node/master01 labeled
+]777;notify;Command completed;oc label node master01 env=dev]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc label node master01 env=dev2 env=prod[1P1 env=dev[11Pget nodes -L env
+NAME       STATUS   ROLES           AGE    VERSION           ENV
+master01   Ready    master,worker   126d   v1.18.3+012b3ec   dev
+master02   Ready    master,worker   126d   v1.18.3+012b3ec   prod
+master03   Ready    master,worker   126d   v1.18.3+012b3ec   
+]777;notify;Command completed;oc get nodes -L env]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc login -u developer -p developer
+Login successful.
+
+You don't have any projects. You can try to create a new project, by running
+
+    oc new-project <projectname>
+
+]777;notify;Command completed;oc login -u developer -p developer]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc edit deployment/hello
+Error from server (Forbidden): deployments.apps "hello" is forbidden: User "developer" cannot get resource "deployments" in API group "apps" in the namespace "default"
+]777;notify;Command completed;oc edit deployment/hello]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ pc[K[Koc project edit deployment/hellologin -u developer -p developer[15Pget nodes -L envlabel node master01 env=dev2 env=prod[1P1 env=dev[11Pget nodes -L envlogin -u admin -p redhat[16Pget pods[6Pclearoc get pods -w[Kscale --replicas 4 deployment/hello[19Pexpose svc/hellooc new-app --name hello \c new-app --name hello   --docker-image quay.io/redhattraining/hello-world-ngiinx:v1.0[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cproject schedule-pods[K
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1P[1P[1P[1P
+error: You are not a member of project "schedule-pods".
+You are not a member of any projects. You can request a project to be created with the 'new-project' command.
+]777;notify;Command completed;oc project schedule-pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ wh[K[Koc whoami
+developer
+]777;notify;Command completed;oc whoami]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc [K[K[Koc whoamiproject schedule-pods
+error: You are not a member of project "schedule-pods".
+You are not a member of any projects. You can request a project to be created with the 'new-project' command.
+]777;notify;Command completed;oc project schedule-pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc project schedule-podswhoami[Kproject schedule-podsedit deployment/hellologin -u developer -p developer[15Pget nodes -L envlabel node master01 env=dev2 env=prod[1P1 env=dev[11Pget nodes -L envlogin -u admin -p redhat
+Login successful.
+
+You have access to 59 projects, the list has been suppressed. You can list all projects with 'oc projects'
+
+Using project "default".
+]777;notify;Command completed;oc login -u admin -p redhat]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc login -u admin -p redhat[3Pproject schedule-podswhoami[Kproject schedule-pods
+Now using project "schedule-pods" on server "https://api.ocp4.example.com:6443".
+]777;notify;Command completed;oc project schedule-pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc project schedule-podslogin -u admin -p redhat[3Pproject schedule-podswhoami[Kproject schedule-podsedit deployment/hello
+[?2004h[?1049h[22;0;0t[?1h=[?2004h[1;37r[?12h[?12l[27m[23m[29m[m[H[2J[?25l[37;1H"/tmp/oc-edit-3zjn8.yaml" 180L, 5258C[1;1H# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "2"
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"hello:v1.0"},"fieldPath":"spec.templl[11;1Hate.spec.containers[?(@.name==\"hello\")].image"}]'
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: "2020-12-10T03:15:01Z"
+  generation: 3
+  labels:
+    app: hello
+    app.kubernetes.io/component: hello
+    app.kubernetes.io/instance: hello
+  managedFields:
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:[23;7Hf:metadata:[24;9Hf:annotations:[25;11H.: {}[26;11Hf:image.openshift.io/triggers: {}[27;11Hf:openshift.io/generated-by: {}[28;9Hf:labels:[29;11H.: {}[30;11Hf:app: {}[31;11Hf:app.kubernetes.io/component: {}[32;11Hf:app.kubernetes.io/instance: {}[33;7Hf:spec:[34;9Hf:progressDeadlineSeconds: {}[35;9Hf:replicas: {}[36;9Hf:revisionHistoryLimit: {}[1;1H[?25h
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[?25l[1;36r[36;1H
+[1;37r[36;9Hf:selector:[37;1H[K[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;11Hf:matchLabels:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:deployment: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:strategy:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;11Hf:rollingUpdate:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:maxSurge: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:maxUnavailable: {}[31;1H[?25h[?25l[1;36r[1;1H[2M[1;37r[35;11Hf:type: {}[36;9Hf:template:[30;1H[?25h
+[?25l[1;36r[36;1H
+[1;37r[36;11Hf:metadata:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:annotations:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;15H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;15Hf:openshift.io/generated-by: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:labels:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;15H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;15Hf:deployment: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;11Hf:spec:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:containers:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;15Hk:{"name":"hello"}:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;17H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;17Hf:imagePullPolicy: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;17Hf:name: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;17Hf:ports:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;19H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;19Hk:{"containerPort":8080,"protocol":"TCP"}:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;21H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;21Hf:containerPort: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;21Hf:protocol: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;17Hf:resources: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;17Hf:terminationMessagePath: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;17Hf:terminationMessagePolicy: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:dnsPolicy: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:restartPolicy: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:schedulerName: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:securityContext: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:terminationGracePeriodSeconds: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hmanager: oc[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hoperation: Update[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Htime: "2020-12-10T03:15:01Z"[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3H- apiVersion: apps/v1[31;1H[?25h[30;1H[29;1H[28;1H
+
+
+[?25l[1;36r[36;1H
+[1;37r[36;5HfieldsType: FieldsV1[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5HfieldsV1:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7Hf:spec:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:template:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;11Hf:spec:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:containers:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;15Hk:{"name":"hello"}:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;17Hf:image: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hmanager: openshift-controller-manager[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hoperation: Update[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Htime: "2020-12-10T03:15:02Z"[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3H- apiVersion: apps/v1[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5HfieldsType: FieldsV1[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5HfieldsV1:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7Hf:metadata:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:annotations:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;11Hf:deployment.kubernetes.io/revision: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7Hf:status:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:availableReplicas: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:conditions:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;11H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;11Hk:{"type":"Available"}:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:lastTransitionTime: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:lastUpdateTime: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:message: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:reason: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:status: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:type: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;11Hk:{"type":"Progressing"}:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:lastTransitionTime: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:lastUpdateTime: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:message: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:reason: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:status: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:type: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:observedGeneration: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:readyReplicas: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:replicas: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:updatedReplicas: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hmanager: kube-controller-manager[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hoperation: Update[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Htime: "2020-12-10T03:15:47Z"[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3Hname: hello[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3Hnamespace: schedule-pods[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3HresourceVersion: "108739"[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3HselfLink: /apis/apps/v1/namespaces/schedule-pods/deployments/hello[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3Huid: a72cef40-ced5-4d9f-815a-ac03068da174[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;1Hspec:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3HprogressDeadlineSeconds: 600[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3Hreplicas: 4[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3HrevisionHistoryLimit: 10[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3Hselector:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5HmatchLabels:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7Hdeployment: hello[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3Hstrategy:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5HrollingUpdate:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7HmaxSurge: 25%[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7HmaxUnavailable: 25%[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Htype: RollingUpdate[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3Htemplate:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hmetadata:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7Hannotations:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hopenshift.io/generated-by: OpenShiftNewApp[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7HcreationTimestamp: null[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7Hlabels:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hdeployment: hello[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hspec:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7Hcontainers:[31;1H[?25h[?25l[1;36r[1;1H[2M[1;37r[35;7H- image: quay.io/redhattraining/hello-world-nginx@sha256:941928d702a2f08c986017b1eed3417d83952f05de55d65777[36;1H87512e82714dd89[30;1H[?25h
+[?25l[1;36r[36;1H
+[1;37r[36;9HimagePullPolicy: IfNotPresent[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hname: hello[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hports:[31;1H[?25h[?25l[1;36r[1;1H[2M[1;37r[35;9H- containerPort: 8080[36;11Hprotocol: TCP[30;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hresources: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9HterminationMessagePath: /dev/termination-log[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9HterminationMessagePolicy: File[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7HdnsPolicy: ClusterFirst[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7HrestartPolicy: Always[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7HschedulerName: default-scheduler[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7HsecurityContext: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7HterminationGracePeriodSeconds: 30[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;1Hstatus:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3HavailableReplicas: 4[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3Hconditions:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3H- lastTransitionTime: "2020-12-10T03:15:01Z"[31;1H[?25h[30;1H[29;1H[28;1H      [?25l[37;1H[1m-- INSERT --[29;36r[m[29;1H[L[1;37r[29;1H[?25h[?25l[8C[?25h[?25l[?25h[?25l [?25h[?25l [?25h[?25l [?25h[?25l [?25h[?25l [?25h[?25l [?25h[?25ln[?25h[?25lo[?25h[?25ld[?25h[?25le[?25h[?25lS[?25h[?25le[?25h[?25ll[?25h[?25le[?25h[?25lc[?25h[?25lt[?25h[?25lo[?25h[?25lr[?25h[?25l:[?25h[?25l[30;36r[30;1H[L[1;37r[30;1H[?25h[?25l[8C[?25h[?25le[?25h[?25ln[?25h[?25lf[?25h[?25l[30;11H[K[30;11H[?25h[?25lv[?25h[?25l:[?25h[?25l [?25h[?25ld[?25h[?25le[?25h[?25lv[?25h[37;1H[K[30;16H[?25l[?25h[?2004l[?25l[37;1H"/tmp/oc-edit-3zjn8.yaml" 182L, 5288C written
+[?2004l[?1l>[?25h[?1049l[23;0;0t[?2004h[?1049h[22;0;0t[?1h=[?2004h[1;37r[?12h[?12l[27m[23m[29m[m[H[2J[?25l[37;1H"/tmp/oc-edit-gl3l5.yaml" 184L, 5446C[1;1H# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+# The edited file had a syntax error: error parsing edited-file: error converting YAML to JSON: yaml: line 159:  [6;1Hfound character that cannot start any token
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "2"
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"hello:v1.0"},"fieldPath":"spec.templl[14;1Hate.spec.containers[?(@.name==\"hello\")].image"}]'
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: "2020-12-10T03:15:01Z"
+  generation: 3
+  labels:
+    app: hello
+    app.kubernetes.io/component: hello
+    app.kubernetes.io/instance: hello
+  managedFields:
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:[26;7Hf:metadata:[27;9Hf:annotations:[28;11H.: {}[29;11Hf:image.openshift.io/triggers: {}[30;11Hf:openshift.io/generated-by: {}[31;9Hf:labels:[32;11H.: {}[33;11Hf:app: {}[34;11Hf:app.kubernetes.io/component: {}[35;11Hf:app.kubernetes.io/instance: {}[36;7Hf:spec:[1;1H[?25h
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[?25l[1;36r[36;1H
+[1;37r[36;9Hf:progressDeadlineSeconds: {}[37;1H[K[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:replicas: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:revisionHistoryLimit: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:selector:[31;1H[?25h[?25l[1;36r[1;1H[2M[1;37r[35;11Hf:matchLabels:[36;13H.: {}[30;1H[?25h
+[?25l[1;36r[36;1H
+[1;37r[36;13Hf:deployment: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:strategy:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;11Hf:rollingUpdate:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:maxSurge: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:maxUnavailable: {}[31;1H[?25h[?25l[1;36r[1;1H[2M[1;37r[35;11Hf:type: {}[36;9Hf:template:[30;1H[?25h
+[?25l[1;36r[36;1H
+[1;37r[36;11Hf:metadata:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:annotations:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;15H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;15Hf:openshift.io/generated-by: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:labels:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;15H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;15Hf:deployment: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;11Hf:spec:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:containers:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;15Hk:{"name":"hello"}:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;17H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;17Hf:imagePullPolicy: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;17Hf:name: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;17Hf:ports:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;19H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;19Hk:{"containerPort":8080,"protocol":"TCP"}:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;21H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;21Hf:containerPort: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;21Hf:protocol: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;17Hf:resources: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;17Hf:terminationMessagePath: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;17Hf:terminationMessagePolicy: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:dnsPolicy: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:restartPolicy: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:schedulerName: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:securityContext: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:terminationGracePeriodSeconds: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hmanager: oc[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hoperation: Update[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Htime: "2020-12-10T03:15:01Z"[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3H- apiVersion: apps/v1[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5HfieldsType: FieldsV1[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5HfieldsV1:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7Hf:spec:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:template:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;11Hf:spec:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:containers:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;15Hk:{"name":"hello"}:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;17Hf:image: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hmanager: openshift-controller-manager[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hoperation: Update[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Htime: "2020-12-10T03:15:02Z"[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3H- apiVersion: apps/v1[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5HfieldsType: FieldsV1[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5HfieldsV1:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7Hf:metadata:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:annotations:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;11Hf:deployment.kubernetes.io/revision: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7Hf:status:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:availableReplicas: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:conditions:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;11H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;11Hk:{"type":"Available"}:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:lastTransitionTime: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:lastUpdateTime: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:message: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:reason: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:status: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:type: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;11Hk:{"type":"Progressing"}:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13H.: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:lastTransitionTime: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:lastUpdateTime: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:message: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:reason: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:status: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;13Hf:type: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:observedGeneration: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:readyReplicas: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:replicas: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hf:updatedReplicas: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hmanager: kube-controller-manager[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hoperation: Update[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Htime: "2020-12-10T03:15:47Z"[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3Hname: hello[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3Hnamespace: schedule-pods[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3HresourceVersion: "108739"[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3HselfLink: /apis/apps/v1/namespaces/schedule-pods/deployments/hello[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3Huid: a72cef40-ced5-4d9f-815a-ac03068da174[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;1Hspec:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3HprogressDeadlineSeconds: 600[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3Hreplicas: 4[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3HrevisionHistoryLimit: 10[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3Hselector:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5HmatchLabels:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7Hdeployment: hello[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3Hstrategy:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5HrollingUpdate:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7HmaxSurge: 25%[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7HmaxUnavailable: 25%[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Htype: RollingUpdate[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3Htemplate:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hmetadata:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7Hannotations:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hopenshift.io/generated-by: OpenShiftNewApp[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7HcreationTimestamp: null[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7Hlabels:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hdeployment: hello[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hspec:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7Hcontainers:[31;1H[?25h[?25l[1;36r[1;1H[2M[1;37r[35;7H- image: quay.io/redhattraining/hello-world-nginx@sha256:941928d702a2f08c986017b1eed3417d83952f05de55d65777[36;1H87512e82714dd89[30;1H[?25h
+[?25l[1;36r[36;1H
+[1;37r[36;9HimagePullPolicy: IfNotPresent[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hname: hello[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hports:[31;1H[?25h[?25l[1;36r[1;1H[2M[1;37r[35;9H- containerPort: 8080[36;11Hprotocol: TCP[30;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Hresources: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9HterminationMessagePath: /dev/termination-log[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9HterminationMessagePolicy: File[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7HdnsPolicy: ClusterFirst[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7HnodeSelector:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;9Henv: dev[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7HrestartPolicy: Always[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7HschedulerName: default-scheduler[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7HsecurityContext: {}[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;7HterminationGracePeriodSeconds: 30[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;1Hstatus:[31;8H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3HavailableReplicas: 4[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3Hconditions:[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3H- lastTransitionTime: "2020-12-10T03:15:01Z"[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5HlastUpdateTime: "2020-12-10T03:15:05Z"[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hmessage: ReplicaSet "hello-6c4984d949" has successfully progressed.[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hreason: NewReplicaSetAvailable[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hstatus: "True"[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Htype: Progressing[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3H- lastTransitionTime: "2020-12-10T03:15:45Z"[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5HlastUpdateTime: "2020-12-10T03:15:45Z"[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hmessage: Deployment has minimum availability.[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hreason: MinimumReplicasAvailable[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Hstatus: "True"[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;5Htype: Available[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3HobservedGeneration: 3[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3HreadyReplicas: 4[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3Hreplicas: 4[31;1H[?25h[?25l[1;36r[36;1H
+[1;37r[36;3HupdatedReplicas: 4[31;1H[?25h
+
+
+
+
+
+[?2004l[?2004l[?1l>[?1049l[23;0;0tA copy of your changes has been stored to "/tmp/oc-edit-gl3l5.yaml"
+error: Edit cancelled, no valid changes were saved.
+]777;notify;Command completed;oc edit deployment/hello]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc app[Kply -f oc get pods -o wide[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K/tmp/oc-edit-gl3l5.yaml
+error: error parsing /tmp/oc-edit-gl3l5.yaml: error converting YAML to JSON: yaml: line 161: found character that cannot start any token
+]777;notify;Command completed;oc apply -f /tmp/oc-edit-gl3l5.yaml]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc apply -f /tmp/oc-edit-gl3l5.yaml
+error: error parsing /tmp/oc-edit-gl3l5.yaml: error converting YAML to JSON: yaml: line 161: found character that cannot start any token
+]777;notify;Command completed;oc apply -f /tmp/oc-edit-gl3l5.yaml]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ ls ../DO280/labs/
+[0m[38;5;33mauth-review[0m
+]777;notify;Command completed;ls ../DO280/labs/]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ ls ../DO280/labs/[K[K[K[K[Ksp[Kolutions/
+[0m[38;5;33mauth-review[0m
+]777;notify;Command completed;ls ../DO280/solutions/]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ lab schedule-pods finish
+
+Completing Guided Exercise: Controlling Pod Scheduling Behavior
+
+ · Delete OpenShift project 'schedule-pods'....................  [1;36mSUCCESS[0;39m
+ · Wait for project 'schedule-pods' to be gone.................  [1;36mSUCCESS[0;39m
+ · Remove 'env' label from worker nodes........................  [1;36mSUCCESS[0;39m
+
+Please use start if you wish to do the exercise again.
+
+]777;notify;Command completed;lab schedule-pods finish]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ exit
+
+Script done on 2020-12-09 22:24:41-05:00

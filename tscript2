@@ -1,0 +1,226 @@
+Script started on 2020-12-09 22:25:01-05:00
+]777;notify;Command completed;lab schedule-pods finish]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ lab schedule-limit start
+
+Checking prerequisites for Guided Exercise: Limiting Resource Usage by an Application
+
+ Verify the OpenShift cluster is running:
+ · Router pods are available...................................  [1;36mSUCCESS[0;39m
+ · OAuth pods are available....................................  [1;36mSUCCESS[0;39m
+ · API pods are available......................................  [1;36mSUCCESS[0;39m
+ · Control plane node 'master01' is ready......................  [1;36mSUCCESS[0;39m
+ · Control plane node 'master02' is ready......................  [1;36mSUCCESS[0;39m
+ · Control plane node 'master03' is ready......................  [1;36mSUCCESS[0;39m
+
+ Checking for conflicts with existing OpenShift projects:
+ · The 'schedule-limit' project is absent......................  [1;36mSUCCESS[0;39m
+ Checking for conflicts with existing OpenShift projects:
+ · The 'template-test' project is absent.......................  [1;36mSUCCESS[0;39m
+
+Setting up the classroom for Guided Exercise: Limiting Resource Usage by an Application
+
+ · User 'kubeadmin' can successfully log in to the cluster.....  [1;36mSUCCESS[0;39m
+ · Validate 'admin' can log in with password 'redhat'..........  [1;36mSUCCESS[0;39m
+ · Validate 'leader' can log in with password 'redhat'.........  [1;36mSUCCESS[0;39m
+ · Validate 'developer' can log in with password 'developer'...  [1;36mSUCCESS[0;39m
+
+ Preparing the student's cluster:
+ · Download exercise files.....................................  [1;36mSUCCESS[0;39m
+ · Download solution files.....................................  [1;36mSUCCESS[0;39m
+
+Overall start status...........................................  [1;36mSUCCESS[0;39m
+
+]777;notify;Command completed;lab schedule-limit start]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc login -u developer -p developer https://api.ocp4.example.com:6443
+Login successful.
+
+You don't have any projects. You can try to create a new project, by running
+
+    oc new-project <projectname>
+
+]777;notify;Command completed;oc login -u developer -p developer https://api.ocp4.example.com:6443]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ 
+]777;notify;Command completed;oc login -u developer -p developer https://api.ocp4.example.com:6443]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc new-project schedule-limit
+Now using project "schedule-limit" on server "https://api.ocp4.example.com:6443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app ruby~https://github.com/sclorg/ruby-ex.git
+
+to build a new example application in Ruby. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node
+
+]777;notify;Command completed;oc new-project schedule-limit]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc create deployment hello-limit \
+>     --image quay.io/redhattraining/hello-world-nginx:v1.0 \
+>     --dry-run=client -o yaml > ~/DO280/labs/schedule-limit/hello-limit.yaml  
+]777;notify;Command completed;oc create deployment hello-limit     --image quay.io/redhattraining/hello-world-nginx:v1.0     --dry-run=client -o yaml > ~/DO280/labs/schedule-limit/hello-limit.yaml  ]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ vim ~/DO280/labs/schedule-limit/hello-limit.yaml
+[?2004h[?1049h[22;0;0t[?1h=[?2004h[1;37r[?12h[?12l[27m[23m[29m[m[H[2J[?25l[37;1H"~/DO280/labs/schedule-limit/hello-limit.yaml" 24L, 460C[2;1H▽[6n[2;1H  [1;1H[>c]10;?]11;?[1;1H[36mapiVersion[m[35m:[m apps/v1
+[36mkind[m[35m:[m Deployment
+[36mmetadata[m[35m:[m
+  [36mcreationTimestamp[m[35m:[m [31mnull[m
+  [36mlabels[m[35m:[m
+    [36mapp[m[35m:[m hello-limit
+  [36mname[m[35m:[m hello-limit
+[36mspec[m[35m:[m
+  [36mreplicas[m[35m:[m [31m1[m
+  [36mselector[m[35m:[m
+    [36mmatchLabels[m[35m:[m[12;7H[36mapp[m[35m:[m hello-limit
+  [36mstrategy[m[35m:[m [35m{}[m
+  [36mtemplate[m[35m:[m
+    [36mmetadata[m[35m:[m[16;7H[36mcreationTimestamp[m[35m:[m [31mnull[m[17;7H[36mlabels[m[35m:[m[18;9H[36mapp[m[35m:[m hello-limit
+    [36mspec[m[35m:[m[20;7H[36mcontainers[m[35m:[m[21;7H[38;5;130m- [m[36mimage[m[35m:[m quay.io/redhattraining/hello-world-nginx:v1.0[22;9H[36mname[m[35m:[m hello-world-nginx[23;9H[36mresources[m[35m:[m [35m{}[m
+[36mstatus[m[35m:[m [35m{}[m
+[94m~                                                                                                               [26;1H~                                                                                                               [27;1H~                                                                                                               [28;1H~                                                                                                               [29;1H~                                                                                                               [30;1H~                                                                                                               [31;1H~                                                                                                               [32;1H~                                                                                                               [33;1H~                                                                                                               [34;1H~                                                                                                               [35;1H~                                                                                                               [36;1H~                                                                                                               [m[37;95H1,1[11CAll[1;1H[?25hP+q436f\P+q6b75\P+q6b64\P+q6b72\P+q6b6c\P+q2332\P+q2334\P+q2569\P+q2a37\P+q6b31\[27m[23m[29m[m[H[2J[?25l[1;1H[1m[96mapiVersion[m[38;5;224m:[m apps/v1
+[1m[96mkind[m[38;5;224m:[m Deployment
+[1m[96mmetadata[m[38;5;224m:[m
+  [1m[96mcreationTimestamp[m[38;5;224m:[m [95mnull[m
+  [1m[96mlabels[m[38;5;224m:[m
+    [1m[96mapp[m[38;5;224m:[m hello-limit
+  [1m[96mname[m[38;5;224m:[m hello-limit
+[1m[96mspec[m[38;5;224m:[m
+  [1m[96mreplicas[m[38;5;224m:[m [95m1[m
+  [1m[96mselector[m[38;5;224m:[m
+    [1m[96mmatchLabels[m[38;5;224m:[m[12;7H[1m[96mapp[m[38;5;224m:[m hello-limit
+  [1m[96mstrategy[m[38;5;224m:[m [38;5;224m{}[m
+  [1m[96mtemplate[m[38;5;224m:[m
+    [1m[96mmetadata[m[38;5;224m:[m[16;7H[1m[96mcreationTimestamp[m[38;5;224m:[m [95mnull[m[17;7H[1m[96mlabels[m[38;5;224m:[m[18;9H[1m[96mapp[m[38;5;224m:[m hello-limit
+    [1m[96mspec[m[38;5;224m:[m[20;7H[1m[96mcontainers[m[38;5;224m:[m[21;7H[93m- [m[1m[96mimage[m[38;5;224m:[m quay.io/redhattraining/hello-world-nginx:v1.0[22;9H[1m[96mname[m[38;5;224m:[m hello-world-nginx[23;9H[1m[96mresources[m[38;5;224m:[m [38;5;224m{}[m
+[1m[96mstatus[m[38;5;224m:[m [38;5;224m{}[m
+[94m~                                                                                                               [26;1H~                                                                                                               [27;1H~                                                                                                               [28;1H~                                                                                                               [29;1H~                                                                                                               [30;1H~                                                                                                               [31;1H~                                                                                                               [32;1H~                                                                                                               [33;1H~                                                                                                               [34;1H~                                                                                                               [35;1H~                                                                                                               [36;1H~                                                                                                               [m[37;95H1,1[11CAll"~/DO280/labs/schedule-limit/hello-limit.yaml" 24L, 460C[1;1H[?25h[?25l[37;85H~@k[1;1H[37;85H   [1;1H[?25h[?25l[37;85H~@k[1;1H[37;85H   [1;1H[?25h[?25l[37;85H^[[1;1H[37;85H  [1;1H[37;85H^[[1;1H[37;85H  [1;1H[?25h[?25l[37;85H:[1;1H[37;1H[K[37;1H:[?2004h[?25hq[?25l[?25h![?25l[?25h[?25l[?2004l[37;1H[K[37;1H[?2004l[?1l>[?25h[?1049l[23;0;0t]777;notify;Command completed;vim ~/DO280/labs/schedule-limit/hello-limit.yaml]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ vim ~/DO280/labs/schedule-limit/hello-limit.yaml[1P ~/DO280/labs/schedule-limit/hello-limit.yaml[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1P ~/DO280/labs/schedule-limit/hello-limit.yaml[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1P ~/DO280/labs/schedule-limit/hello-limit.yaml[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Co ~/DO280/labs/schedule-limit/hello-limit.yaml[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cc ~/DO280/labs/schedule-limit/hello-limit.yaml[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C ~/DO280/labs/schedule-limit/hello-limit.yaml[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cc ~/DO280/labs/schedule-limit/hello-limit.yaml[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cr ~/DO280/labs/schedule-limit/hello-limit.yaml[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ce ~/DO280/labs/schedule-limit/hello-limit.yaml[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ca ~/DO280/labs/schedule-limit/hello-limit.yaml[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ct ~/DO280/labs/schedule-limit/hello-limit.yaml[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ce ~/DO280/labs/schedule-limit/hello-limit.yaml[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C ~/DO280/labs/schedule-limit/hello-limit.yaml- ~/DO280/labs/schedule-limit/hello-limit.yaml- ~/DO280/labs/schedule-limit/hello-limit.yamls ~/DO280/labs/schedule-limit/hello-limit.yamla ~/DO280/labs/schedule-limit/hello-limit.yamlv ~/DO280/labs/schedule-limit/hello-limit.yamle ~/DO280/labs/schedule-limit/hello-limit.yaml- ~/DO280/labs/schedule-limit/hello-limit.yamlc ~/DO280/labs/schedule-limit/hello-limit.yamlo ~/DO280/labs/schedule-limit/hello-limit.yamln ~/DO280/labs/schedule-limit/hello-limit.yamlf ~/DO280/labs/schedule-limit/hello-limit.yamli ~/DO280/labs/schedule-limit/hello-limit.yamlg ~/DO280/labs/schedule-limit/hello-limit.yaml[C ~/DO280/labs/schedule-limit/hello-limit.yaml\ ~/DO280/labs/schedule-limit/hello-limit.yaml
+  Error: must specify one of -f and -k
+
+error: unknown command " ~/DO280/labs/schedule-limit/hello-limit.yaml"
+See 'oc create -h' for help and examples
+]777;notify;Command completed;oc create --save-config \ ~/DO280/labs/schedule-limit/hello-limit.yaml]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$    -f ~/DO280/labs/schedule-limit/hello-limit.yaml    
+bash: -f: command not found...
+]777;notify;Command completed;-f ~/DO280/labs/schedule-limit/hello-limit.yaml    ]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc create --save-config \
+>    -f ~/DO280/labs/schedule-limit/hello-limit.yaml    
+deployment.apps/hello-limit created
+]777;notify;Command completed;oc create --save-config    -f ~/DO280/labs/schedule-limit/hello-limit.yaml    ]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get pods
+NAME                           READY   STATUS    RESTARTS   AGE
+hello-limit-5cc86ff6b8-wlzbp   0/1     Pending   0          11s
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get events --field-selector type=Warning
+LAST SEEN   TYPE      REASON             OBJECT                             MESSAGE
+23s         Warning   FailedScheduling   pod/hello-limit-5cc86ff6b8-wlzbp   0/3 nodes are available: 3 Insufficient cpu.
+]777;notify;Command completed;oc get events --field-selector type=Warning]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get events --field-selector type=Warningpods[Kcreate --save-config    -f ~/DO280/labs/schedule-limit/hello-limit.yaml     [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K 
+Error from server (AlreadyExists): error when creating "/home/student/DO280/labs/schedule-limit/hello-limit.yaml": deployments.apps "hello-limit" already exists
+]777;notify;Command completed;oc create --save-config    -f ~/DO280/labs/schedule-limit/hello-limit.yaml    ]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc create --save-config    -f ~/DO280/labs/schedule-limit/hello-limit.yaml     [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1P
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[C[C[1P[1P[1P[1P[1P[1P[1P[1@a[1@p[1@p[1@l[1@y
+deployment.apps/hello-limit configured
+]777;notify;Command completed;oc apply   -f ~/DO280/labs/schedule-limit/hello-limit.yaml    ]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc apply   -f ~/DO280/labs/schedule-limit/hello-limit.yaml    [C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccreate --save-config    -f ~/DO280/labs/schedule-limit/hello-limit.yaml     [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[35Pget events --field-selector type=Warning
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cpods[K
+NAME                         READY   STATUS    RESTARTS   AGE
+hello-limit-d55cd65c-lgdpr   1/1     Running   0          5s
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get pods
+NAME                         READY   STATUS    RESTARTS   AGE
+hello-limit-d55cd65c-lgdpr   1/1     Running   0          8s
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc scale --replicas 4 deployment/hello-limit
+deployment.apps/hello-limit scaled
+]777;notify;Command completed;oc scale --replicas 4 deployment/hello-limit]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get pods
+NAME                         READY   STATUS    RESTARTS   AGE
+hello-limit-d55cd65c-98qvj   0/1     Pending   0          9s
+hello-limit-d55cd65c-lgdpr   1/1     Running   0          31s
+hello-limit-d55cd65c-prhgm   1/1     Running   0          9s
+hello-limit-d55cd65c-rchj8   0/1     Pending   0          9s
+]777;notify;Command completed;oc get pods]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get podsscale --replicas 4 deployment/hello-limit[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cget pods[Kapply   -f ~/DO280/labs/schedule-limit/hello-limit.yaml    [C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccreate --save-config    -f ~/DO280/labs/schedule-limit/hello-limit.yaml     [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[35Pget events --field-selector type=Warning
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+LAST SEEN   TYPE      REASON             OBJECT                             MESSAGE
+37s         Warning   FailedScheduling   pod/hello-limit-5cc86ff6b8-wlzbp   0/3 nodes are available: 3 Insufficient cpu.
+33s         Warning   FailedScheduling   pod/hello-limit-5cc86ff6b8-wlzbp   skip schedule deleting pod: schedule-limit/hello-limit-5cc86ff6b8-wlzbp
+14s         Warning   FailedScheduling   pod/hello-limit-d55cd65c-98qvj     0/3 nodes are available: 3 Insufficient cpu.
+14s         Warning   FailedScheduling   pod/hello-limit-d55cd65c-rchj8     0/3 nodes are available: 3 Insufficient cpu.
+]777;notify;Command completed;oc get events --field-selector type=Warning]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc delete all -l app=hello-limit
+pod "hello-limit-d55cd65c-98qvj" deleted
+pod "hello-limit-d55cd65c-lgdpr" deleted
+pod "hello-limit-d55cd65c-prhgm" deleted
+pod "hello-limit-d55cd65c-rchj8" deleted
+deployment.apps "hello-limit" deleted
+]777;notify;Command completed;oc delete all -l app=hello-limit]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc create --save-config \
+>    -f ~/DO280/labs/schedule-limit/loadtest.yaml   
+deployment.apps/loadtest created
+service/loadtest created
+route.route.openshift.io/loadtest created
+]777;notify;Command completed;oc create --save-config    -f ~/DO280/labs/schedule-limit/loadtest.yaml   ]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get routes
+NAME       HOST/PORT                        PATH   SERVICES   PORT   TERMINATION   WILDCARD
+loadtest   loadtest.apps.ocp4.example.com          loadtest   8080                 None
+]777;notify;Command completed;oc get routes]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ [K[student@workstation DO280-apps]$ clear
+[3J[H[2J]777;notify;Command completed;clear]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ curl -X GET \
+>    http://loadtest.apps.ocp4.example.com/api/loadtest/v1/mem/150/60   
+curl: (52) Empty reply from server
+]777;notify;Command completed;curl -X GET    http://loadtest.apps.ocp4.example.com/api/loadtest/v1/mem/150/60   ]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ curl -X GET    http://loadtest.apps.ocp4.example.com/api/loadtest/v1/mem/150/600   [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C/60 [C[C[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C/60  [C[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C/60 
+[C[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C2/60
+[C [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C0/60 [C [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C0/60[C[C [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+
+<html><body><h1>502 Bad Gateway</h1>
+The server returned an invalid or incomplete response.
+</body></html>
+]777;notify;Command completed;curl -X GET    http://loadtest.apps.ocp4.example.com/api/loadtest/v1/mem/200/60   ]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ curl -X GET    http://loadtest.apps.ocp4.example.com/api/loadtest/v1/mem/200/600   [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C/60 [C[C[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C/60  [C[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C/60 
+[C[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C1/60
+[C [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C5/60 [C [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C0/60[C[C [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+
+^C
+]777;notify;Command completed;curl -X GET    http://loadtest.apps.ocp4.example.com/api/loadtest/v1/mem/150/60   ]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc delete all -l app=loadtest
+pod "loadtest-58d967ffbb-5xvfn" deleted
+service "loadtest" deleted
+deployment.apps "loadtest" deleted
+replicaset.apps "loadtest-58d967ffbb" deleted
+route.route.openshift.io "loadtest" deleted
+
+]777;notify;Command completed;oc delete all -l app=loadtest]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ 
+]777;notify;Command completed;oc delete all -l app=loadtest]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc login -u admin -p redhat
+Login successful.
+
+You have access to 59 projects, the list has been suppressed. You can list all projects with 'oc projects'
+
+Using project "schedule-limit".
+]777;notify;Command completed;oc login -u admin -p redhat]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc create quota project-quota \
+>    --hard cpu="3",memory="1G",configmaps="3"   -n schedule-limit   
+resourcequota/project-quota created
+]777;notify;Command completed;oc create quota project-quota    --hard cpu="3",memory="1G",configmaps="3"   -n schedule-limit   ]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc login -u developer -p developer
+Login successful.
+
+You have one project on this server: "schedule-limit"
+
+Using project "schedule-limit".
+]777;notify;Command completed;oc login -u developer -p developer]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ for X in {1..4}
+>     do
+>     oc create configmap my-config${X} --from-literal key${X}=value${X}
+>     done   
+configmap/my-config1 created
+configmap/my-config2 created
+configmap/my-config3 created
+Error from server (Forbidden): configmaps "my-config4" is forbidden: exceeded quota: project-quota, requested: configmaps=1, used: configmaps=3, limited: configmaps=3
+]777;notify;Command completed;for X in {1..4}      do     oc create configmap my-config${X} --from-literal key${X}=value${X}      done   ]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc login -u admin -p redhat
+Login successful.
+
+You have access to 59 projects, the list has been suppressed. You can list all projects with 'oc projects'
+
+Using project "schedule-limit".
+]777;notify;Command completed;oc login -u admin -p redhat]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc adm create-bootstrap-project-template \
+>    -o yaml > /tmp/project-template.yaml    
+]777;notify;Command completed;oc adm create-bootstrap-project-template    -o yaml > /tmp/project-template.yaml    ]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc create -f /home/student/DO280/solutions/schedule-limit/project-template.yam l
+template.template.openshift.io/project-request created
+]777;notify;Command completed;oc create -f /home/student/DO280/solutions/schedule-limit/project-template.yaml]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ [K[student@workstation DO280-apps]$ oc new-project template-test
+Now using project "template-test" on server "https://api.ocp4.example.com:6443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app ruby~https://github.com/sclorg/ruby-ex.git
+
+to build a new example application in Ruby. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node
+
+]777;notify;Command completed;oc new-project template-test]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get resourcequotas,limitranges
+No resources found in template-test namespace.
+]777;notify;Command completed;oc get resourcequotas,limitranges]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get resourcequotas,limitranges
+No resources found in template-test namespace.
+]777;notify;Command completed;oc get resourcequotas,limitranges]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc get resourcequotas,limitranges[5Pnew-project template-test
+Error from server (AlreadyExists): project.project.openshift.io "template-test" already exists
+]777;notify;Command completed;oc new-project template-test]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc new-project template-testget resourcequotas,limitranges
+No resources found in template-test namespace.
+]777;notify;Command completed;oc get resourcequotas,limitranges]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc delete project schedule-limit
+project.project.openshift.io "schedule-limit" deleted
+]777;notify;Command completed;oc delete project schedule-limit]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc delete project template-test
+project.project.openshift.io "template-test" deleted
+]777;notify;Command completed;oc delete project template-test]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ exit
+
+Script done on 2020-12-09 22:40:07-05:00
