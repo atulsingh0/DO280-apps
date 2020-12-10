@@ -1,0 +1,17 @@
+Script started on 2020-12-09 23:47:06-05:00
+]777;notify;Command completed;oc get hpa/loadtest     ]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ oc whoami --show-console
+https://console-openshift-console.apps.ocp4.example.com
+]777;notify;Command completed;oc whoami --show-console]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ cp -R DO2[K[K[K../DO280/* .
+]777;notify;Command completed;cp -R ../DO280/* .]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ git ta[K[Kstatus
+On branch console-admin
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	[31mlabs/[m
+	[31msolutions/[m
+	[31mtypescript[m
+
+nothing added to commit but untracked files present (use "git add" to track)
+]777;notify;Command completed;git status]0;student@workstation:~/DO280-apps]7;file://workstation.lab.example.com/home/student/DO280-apps[student@workstation DO280-apps]$ git add --[K[K[K[K[K[K[K[K[K[Kexit
+
+Script done on 2020-12-10 00:00:06-05:00
